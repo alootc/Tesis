@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05629bb1875fe514199932384fc06d8b, type: 3}
+  m_Name: Machine DataDC
+  m_EditorClassIdentifier: 
+  machineName: dc
+  description: lkmmdsc
+  machineType: 1
+  modelPrefab: {fileID: 1729961841643825501, guid: d3a18d556e574fc4095051ae53506c1a,
+    type: 3}
+  defaultVoltage: 50
+  defaultCurrent: 100
+  components:
+  - axsaxca
+  - xsax
