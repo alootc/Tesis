@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/DCButton.prefab.meta
 guid: 0f12336eba9abb8459d8c62797f78c42
 PrefabImporter:
+========
+guid: b52c72ad20f330845966b45a2ab1dd92
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

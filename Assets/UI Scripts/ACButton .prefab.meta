@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/ACButton .prefab.meta
 guid: 5bcceef39c90a82458767d428d049922
+========
+guid: d3a18d556e574fc4095051ae53506c1a
+>>>>>>>> Stashed changes:Assets/UI Scripts/Cylinder.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

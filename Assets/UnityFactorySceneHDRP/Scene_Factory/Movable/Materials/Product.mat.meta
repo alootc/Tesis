@@ -1,11 +1,20 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: d614739c8f20567409b1bf4526720567
+=======
+<<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/TreeLeaves.mat.meta
+guid: 87987cbd9d41ec44589cd1250c86943f
+========
+guid: d614739c8f20567409b1bf4526720567
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
+>>>>>>> Stashed changes
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< Updated upstream
 AssetOrigin:
   serializedVersion: 1
   productId: 276400
@@ -13,3 +22,5 @@ AssetOrigin:
   packageVersion: 1.0
   assetPath: Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat
   uploadId: 645177
+=======
+>>>>>>> Stashed changes

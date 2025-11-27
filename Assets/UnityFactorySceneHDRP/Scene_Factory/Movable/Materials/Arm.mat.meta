@@ -1,11 +1,20 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: 404ed3890dde3e941a741cef722649ff
+=======
+<<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/Landscape.mat.meta
+guid: a0a9f89ae035e1c46b5acbe4f502b5e9
+========
+guid: 404ed3890dde3e941a741cef722649ff
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat.meta
+>>>>>>> Stashed changes
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< Updated upstream
 AssetOrigin:
   serializedVersion: 1
   productId: 276400
@@ -13,3 +22,5 @@ AssetOrigin:
   packageVersion: 1.0
   assetPath: Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat
   uploadId: 645177
+=======
+>>>>>>> Stashed changes

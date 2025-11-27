@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/Landscape.mat.meta
 guid: a0a9f89ae035e1c46b5acbe4f502b5e9
+========
+guid: 404ed3890dde3e941a741cef722649ff
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Samples/XR Interaction Toolkit/3.0.8/Starter Assets/TunnelingVignette/TunnelingVignette.mat.meta
 guid: 0a35b7e20f75a8540a2c14b9555078cb
+========
+guid: ff5dcb9aed2803a4c8494f5959161e2f
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0

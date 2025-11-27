@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Scenes/MainVR 1.unity.meta
 guid: 8ac645a3297403a47856f31c90d1f378
+========
+guid: e9fe34ef9956ee245929bad5aead0ddd
+>>>>>>>> Stashed changes:Assets/Scenes/test.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

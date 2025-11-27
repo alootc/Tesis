@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/PanelSelector Machine 1.prefab.meta
 guid: b2eda49103250544194673470bea054a
 PrefabImporter:
+========
+guid: 235c3b23b212d4b4eb28bf8a59550539
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
