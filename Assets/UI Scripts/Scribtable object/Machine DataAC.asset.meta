@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 guid: ff5dcb9aed2803a4c8494f5959161e2f
 NativeFormatImporter:
   externalObjects: {}
@@ -7,12 +8,19 @@ NativeFormatImporter:
 =======
 <<<<<<<< Updated upstream:Assets/Samples/XR Interaction Toolkit/3.0.8/Starter Assets/TunnelingVignette/TunnelingVignette.mat.meta
 guid: 0a35b7e20f75a8540a2c14b9555078cb
+=======
+<<<<<<<< Updated upstream:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/DebrisParticle.mat.meta
+guid: 296180be7d2472443ac808b3b88c0a1a
+>>>>>>> Stashed changes
 ========
 guid: ff5dcb9aed2803a4c8494f5959161e2f
 >>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   userData: 
   assetBundleName: 

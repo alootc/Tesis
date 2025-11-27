@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Dust.mat.meta
 guid: 59a23c707a6c1684986642c27a193c59
+========
+guid: 404ed3890dde3e941a741cef722649ff
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0

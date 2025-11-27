@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/DebrisParticle.mat.meta
 guid: 296180be7d2472443ac808b3b88c0a1a
+========
+guid: ff5dcb9aed2803a4c8494f5959161e2f
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0

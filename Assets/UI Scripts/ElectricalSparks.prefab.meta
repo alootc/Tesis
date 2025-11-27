@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/ElectricalSparks.prefab.meta
 guid: eaab871d86e1dd14080e31a493e32c62
 PrefabImporter:
+========
+guid: b52c72ad20f330845966b45a2ab1dd92
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

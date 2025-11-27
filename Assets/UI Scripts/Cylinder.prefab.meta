@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:Assets/UI Scripts/Cylinder.prefab.meta
 guid: d3a18d556e574fc4095051ae53506c1a
 ========
 guid: 57e06f532f44ef14d98b5a0541820dd0
 >>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI/MachineCard.prefab.meta
+=======
+guid: d3a18d556e574fc4095051ae53506c1a
+>>>>>>> Stashed changes
 PrefabImporter:
   externalObjects: {}
   userData: 

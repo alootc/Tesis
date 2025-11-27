@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Embers.mat.meta
 guid: 616decceddab6bc43bb15fd488026c49
+========
+guid: d614739c8f20567409b1bf4526720567
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 0

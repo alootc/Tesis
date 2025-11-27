@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/FleshImpacts.prefab.meta
 guid: 298c3e4e05e5a174993db0eb533adf0b
 PrefabImporter:
+========
+guid: 235c3b23b212d4b4eb28bf8a59550539
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

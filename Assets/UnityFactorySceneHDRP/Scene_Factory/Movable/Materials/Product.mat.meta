@@ -1,5 +1,6 @@
 fileFormatVersion: 2
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 guid: d614739c8f20567409b1bf4526720567
 =======
 <<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/TreeLeaves.mat.meta
@@ -23,4 +24,17 @@ AssetOrigin:
   assetPath: Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat
   uploadId: 645177
 =======
+>>>>>>> Stashed changes
+=======
+<<<<<<<< Updated upstream:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Embers.mat.meta
+guid: 616decceddab6bc43bb15fd488026c49
+========
+guid: d614739c8f20567409b1bf4526720567
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
 >>>>>>> Stashed changes
