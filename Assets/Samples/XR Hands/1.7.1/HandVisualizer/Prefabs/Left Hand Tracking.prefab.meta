@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Prefabs/Left Hand Tracking.prefab.meta
 guid: b3ed8a0a703ebd34a9e44ed3d9f1fcf6
 PrefabImporter:
+========
+guid: b52c72ad20f330845966b45a2ab1dd92
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
