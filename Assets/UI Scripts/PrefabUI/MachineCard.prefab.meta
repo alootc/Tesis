@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:Assets/UI Scripts/PrefabUI/MachineCard.prefab.meta
 guid: 57e06f532f44ef14d98b5a0541820dd0
 PrefabImporter:
@@ -7,6 +8,10 @@ guid: 235c3b23b212d4b4eb28bf8a59550539
 folderAsset: yes
 DefaultImporter:
 >>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object.meta
+=======
+guid: 57e06f532f44ef14d98b5a0541820dd0
+PrefabImporter:
+>>>>>>> Stashed changes
   externalObjects: {}
   userData: 
   assetBundleName: 

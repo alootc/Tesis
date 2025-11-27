@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Materials/TransparentRed.mat.meta
 guid: d149182fa7aa1dc47bd32b2a6da80ec9
+========
+guid: 404ed3890dde3e941a741cef722649ff
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

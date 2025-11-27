@@ -3,6 +3,7 @@ fileFormatVersion: 2
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 guid: ff5dcb9aed2803a4c8494f5959161e2f
 NativeFormatImporter:
   externalObjects: {}
@@ -22,6 +23,10 @@ guid: 70e79a59ff94a274bbfe27c22abc8e7d
 <<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Materials/Blue.mat.meta
 guid: 7b26add94f09dc44fb811013f007a3aa
 >>>>>>> Stashed changes
+=======
+<<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Materials/Red.mat.meta
+guid: 55fa12dc7870f1e46b6a7f8617949a86
+>>>>>>> Stashed changes
 ========
 guid: ff5dcb9aed2803a4c8494f5959161e2f
 >>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
@@ -29,10 +34,14 @@ NativeFormatImporter:
   externalObjects: {}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   mainObjectFileID: 0
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
+>>>>>>> Stashed changes
+=======
+  mainObjectFileID: 2100000
 >>>>>>> Stashed changes
 =======
   mainObjectFileID: 2100000

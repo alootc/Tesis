@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Prefabs/VelocityPrefab.prefab.meta
 guid: 629fd7882ec6bfc499a5fcf20035282b
 PrefabImporter:
+========
+guid: b52c72ad20f330845966b45a2ab1dd92
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

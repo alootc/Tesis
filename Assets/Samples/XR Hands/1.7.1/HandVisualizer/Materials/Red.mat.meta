@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Samples/XR Hands/1.7.1/HandVisualizer/Materials/Red.mat.meta
 guid: 55fa12dc7870f1e46b6a7f8617949a86
+========
+guid: ff5dcb9aed2803a4c8494f5959161e2f
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
