@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/rock.mat.meta
 guid: cc4699be287713540bd60b6c0bc8b863
+========
+guid: 404ed3890dde3e941a741cef722649ff
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Arm.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

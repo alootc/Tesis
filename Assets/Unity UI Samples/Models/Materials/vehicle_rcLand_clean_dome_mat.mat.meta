@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Unity UI Samples/Models/Materials/vehicle_rcLand_clean_dome_mat.mat.meta
 guid: 7c3206cb1325f6b44928661c4a762300
+========
+guid: d614739c8f20567409b1bf4526720567
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

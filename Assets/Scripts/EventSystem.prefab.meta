@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Scripts/EventSystem.prefab.meta
 guid: 753fa9cfc91f9084e8a8e18e2bd95194
 PrefabImporter:
+========
+guid: b52c72ad20f330845966b45a2ab1dd92
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/UI Scripts/PrefabUI.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

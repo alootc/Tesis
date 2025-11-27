@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/TreeTrunk.mat.meta
 guid: 70e79a59ff94a274bbfe27c22abc8e7d
+========
+guid: ff5dcb9aed2803a4c8494f5959161e2f
+>>>>>>>> Stashed changes:Assets/UI Scripts/Scribtable object/Machine DataAC.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000

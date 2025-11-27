@@ -1,10 +1,18 @@
 fileFormatVersion: 2
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 guid: d614739c8f20567409b1bf4526720567
 =======
 <<<<<<<< Updated upstream:Assets/AllSkyFree/_AllSkyFreeDemoEnvironment/Materials/TreeLeaves.mat.meta
 guid: 87987cbd9d41ec44589cd1250c86943f
+========
+guid: d614739c8f20567409b1bf4526720567
+>>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
+>>>>>>> Stashed changes
+=======
+<<<<<<<< Updated upstream:Assets/Unity UI Samples/Models/Materials/vehicle_rcLand_clean_dome_mat.mat.meta
+guid: 7c3206cb1325f6b44928661c4a762300
 ========
 guid: d614739c8f20567409b1bf4526720567
 >>>>>>>> Stashed changes:Assets/UnityFactorySceneHDRP/Scene_Factory/Movable/Materials/Product.mat.meta
@@ -15,6 +23,7 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 AssetOrigin:
   serializedVersion: 1
@@ -37,4 +46,6 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

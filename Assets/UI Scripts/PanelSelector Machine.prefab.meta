@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/UI Scripts/PanelSelector Machine.prefab.meta
 guid: efc7abbdf569f034781400cb7ab7f321
+========
+guid: d3a18d556e574fc4095051ae53506c1a
+>>>>>>>> Stashed changes:Assets/UI Scripts/Cylinder.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
