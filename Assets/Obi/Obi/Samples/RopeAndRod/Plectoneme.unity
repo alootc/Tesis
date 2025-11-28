@@ -94,7 +94,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 60cb1fcd40f2443829b552612b4b0ac8, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 60cb1fcd40f2443829b552612b4b0ac8,
+    type: 2}
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -211,16 +212,19 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459882}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459883}
   m_SourcePrefab: {fileID: 100100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
 --- !u!1 &506459881 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+    type: 3}
   m_PrefabInstance: {fileID: 421764872}
   m_PrefabAsset: {fileID: 0}
 --- !u!64 &506459882
@@ -338,12 +342,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -361,7 +363,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -814,7 +815,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1072598550}
   m_Target: {fileID: 537986386}
-  m_ParticleGroup: {fileID: 5048701005528565804, guid: 74806658f50d141e88786022b12fc58b, type: 2}
+  m_ParticleGroup: {fileID: 5048701005528565804, guid: 74806658f50d141e88786022b12fc58b,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 1
   m_Projection: 0
@@ -834,7 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1072598550}
   m_Target: {fileID: 1733402950}
-  m_ParticleGroup: {fileID: -3402949915523605302, guid: 74806658f50d141e88786022b12fc58b, type: 2}
+  m_ParticleGroup: {fileID: -3402949915523605302, guid: 74806658f50d141e88786022b12fc58b,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 1
   m_Projection: 0
@@ -1311,12 +1314,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1334,7 +1335,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

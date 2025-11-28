@@ -94,7 +94,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: d03718b1550344932a85912567fb2a98, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: d03718b1550344932a85912567fb2a98,
+    type: 2}
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -167,16 +168,19 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459882}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459883}
   m_SourcePrefab: {fileID: 100100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
 --- !u!1 &506459881 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+    type: 3}
   m_PrefabInstance: {fileID: 421764872}
   m_PrefabAsset: {fileID: 0}
 --- !u!64 &506459882
@@ -314,7 +318,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 605701984}
   m_Target: {fileID: 605701980}
-  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a, type: 2}
+  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -503,7 +508,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 766988472}
   m_Target: {fileID: 766988468}
-  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a, type: 2}
+  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1007,7 +1013,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1095269781}
   m_Target: {fileID: 1095269777}
-  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a, type: 2}
+  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1134,7 +1141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec7e70e3318044b69e11352b1f2136b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <sourceMesh>k__BackingField: {fileID: 1250516326192719629, guid: 92fe50136a7db4cc7bf5dceedcfc586e, type: 3}
+  <sourceMesh>k__BackingField: {fileID: 1250516326192719629, guid: 92fe50136a7db4cc7bf5dceedcfc586e,
+    type: 3}
   <materials>k__BackingField:
   - {fileID: 2100000, guid: ad417cd62ee7d4209afa3e3d86bee647, type: 2}
   renderParameters:
@@ -1392,7 +1400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1201406217}
   m_Target: {fileID: 1201406216}
-  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a, type: 2}
+  m_ParticleGroup: {fileID: -2639811391673711616, guid: d82adbfa2e0744621823a657cc1d4d9a,
+    type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0

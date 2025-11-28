@@ -94,7 +94,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 27534f20d18eb45b0acb536b299b8a0c, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 27534f20d18eb45b0acb536b299b8a0c,
+    type: 2}
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -278,10 +279,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459882}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+        type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459883}
   m_SourcePrefab: {fileID: 100100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
@@ -373,10 +376,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491995553}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -413,12 +416,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -436,7 +437,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -466,7 +466,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -6.229}
 --- !u!1 &506459881 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
+    type: 3}
   m_PrefabInstance: {fileID: 421764872}
   m_PrefabAsset: {fileID: 0}
 --- !u!64 &506459882
@@ -552,12 +553,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -575,7 +574,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -672,10 +670,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 916249660}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1243,7 +1241,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1201406219}
   m_Target: {fileID: 916249664}
-  m_ParticleGroup: {fileID: 4437340670510581073, guid: aa522e16fa3d944afa90688caef811d1, type: 2}
+  m_ParticleGroup: {fileID: 4437340670510581073, guid: aa522e16fa3d944afa90688caef811d1,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1263,7 +1262,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1201406219}
   m_Target: {fileID: 2019980195}
-  m_ParticleGroup: {fileID: 7605297887885229143, guid: aa522e16fa3d944afa90688caef811d1, type: 2}
+  m_ParticleGroup: {fileID: 7605297887885229143, guid: aa522e16fa3d944afa90688caef811d1,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1283,7 +1283,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1201406219}
   m_Target: {fileID: 916249664}
-  m_ParticleGroup: {fileID: -4396955149452082975, guid: aa522e16fa3d944afa90688caef811d1, type: 2}
+  m_ParticleGroup: {fileID: -4396955149452082975, guid: aa522e16fa3d944afa90688caef811d1,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1303,7 +1304,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1201406219}
   m_Target: {fileID: 2019980195}
-  m_ParticleGroup: {fileID: 1364724456080004343, guid: aa522e16fa3d944afa90688caef811d1, type: 2}
+  m_ParticleGroup: {fileID: 1364724456080004343, guid: aa522e16fa3d944afa90688caef811d1,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1534,7 +1536,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1295941525}
   m_Target: {fileID: 1966636104}
-  m_ParticleGroup: {fileID: 6085013363271969740, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b, type: 2}
+  m_ParticleGroup: {fileID: 6085013363271969740, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1554,7 +1557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1295941525}
   m_Target: {fileID: 916249664}
-  m_ParticleGroup: {fileID: 2668437529162069470, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b, type: 2}
+  m_ParticleGroup: {fileID: 2668437529162069470, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1574,7 +1578,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1295941525}
   m_Target: {fileID: 1966636104}
-  m_ParticleGroup: {fileID: 8493842404228815792, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b, type: 2}
+  m_ParticleGroup: {fileID: 8493842404228815792, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1594,7 +1599,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1295941525}
   m_Target: {fileID: 916249664}
-  m_ParticleGroup: {fileID: -981642940510787340, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b, type: 2}
+  m_ParticleGroup: {fileID: -981642940510787340, guid: 26f4e1ad2bfa7442fa1380d8f5ea809b,
+    type: 2}
   m_AttachmentType: 1
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2051,12 +2057,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2074,7 +2078,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -2130,10 +2133,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966636100}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 0.2
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2224,12 +2227,10 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2247,7 +2248,6 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -2405,10 +2405,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019980191}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

@@ -4,11 +4,13 @@ using UnityEngine;
 public class ObjectPoolManager : MonoBehaviour
 {
     [Header("Pool Settings")]
-    public GameObject prefab; // Prefab del objeto a instanciar
-    public int poolSize = 10; // Cantidad de objetos a crear
-    public int activeCount = 0; // Cantidad de objetos activos
-    private List<GameObject> pool = new List<GameObject>(); // Lista de objetos creados
+    [SerializeField] private GameObject prefab;    // Prefab del objeto a instanciar
+    [SerializeField] private int poolSize = 10; // Cantidad de objetos a crear
 
+    private readonly List<GameObject> pool = new List<GameObject>(); // Lista de objetos creados
+    public int activeCount = 0; // Cantidad de objetos activos
+    
+    #region Unity Methods
     void Start()
     {
         // Crear la cantidad inicial de objetos en (0,0,0) y desactivarlos
@@ -19,18 +21,17 @@ public class ObjectPoolManager : MonoBehaviour
             pool.Add(obj);
         }
     }
+    #endregion
 
-    /// <summary>
-    /// Toma un objeto del pool, lo activa y lo coloca en la posición y orientación dadas.
-    /// </summary>
-    /// <param name="position">Posición donde colocar el objeto.</param>
-    /// <param name="rotation">Rotación del objeto.</param>
-    /// <returns>El objeto activado.</returns>
+    #region Public API
+
     public GameObject GetObject(Vector3 position, Quaternion rotation,Transform parent)
     {
-        GameObject obj = null;
+        //GameObject obj = null;
+        GameObject obj = pool.Find(item => !item.activeInHierarchy);
 
         // Buscar un objeto inactivo en la lista
+        
         foreach (GameObject item in pool)
         {
             if (!item.activeInHierarchy)
@@ -55,4 +56,6 @@ public class ObjectPoolManager : MonoBehaviour
         activeCount++; // Incrementar el conteo de activos
         return obj;
     }
+    #endregion
+
 }
