@@ -4,9 +4,9 @@ using UnityEngine;
 public class ACMachineBehavior : ScriptableObject, IMachineBehavior
 {
     [Header("AC Properties")]
-    public float baseIntensity = 0.8f; // menor que DC
-    public float instabilityFactor = 0.4f; // más inestable
-    public float penetrationMultiplier = 0.7f; // menor penetración
+    public float baseIntensity = 0.8f; 
+    public float instabilityFactor = 0.4f; 
+    public float penetrationMultiplier = 0.7f; 
 
     public void OnStart() { }
     public void OnStop() { }
@@ -17,7 +17,6 @@ public class ACMachineBehavior : ScriptableObject, IMachineBehavior
                         * (voltage / 25f)
                         * Mathf.Clamp01(1f - distance * 0.2f);
 
-        // Variación AC ? simula la alternancia 60 Hz
         intensity *= 1f + Mathf.Sin(Time.time * 120f) * 0.15f;
 
         return intensity * penetrationMultiplier;

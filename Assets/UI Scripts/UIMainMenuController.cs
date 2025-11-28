@@ -72,6 +72,7 @@ public class UIMainMenuController : MonoBehaviour
     {
         var hover = button.gameObject.AddComponent<UIButtonHover>();
         hover.Initialize(animator);
+
     }
 
     private void OnModeSelected(PlayMode mode)

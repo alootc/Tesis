@@ -30,7 +30,6 @@ public class MachineCardController : MonoBehaviour, IPointerEnterHandler, IPoint
 
         defaultScale = transform.localScale;
     }
-
     public void Initialize(MachineData machineData, MachineFactory factory)
     {
         data = machineData;
@@ -44,7 +43,6 @@ public class MachineCardController : MonoBehaviour, IPointerEnterHandler, IPoint
             modelInstance = factory.CreateModelInstance(data, modelContainer);
             modelInstance.SetActive(true);
 
-            // Models in cards DO NOT rotate
             var rot = modelInstance.GetComponent<MachineModelRotator>();
             if (rot != null)
                 rot.enabled = false;
@@ -55,35 +53,25 @@ public class MachineCardController : MonoBehaviour, IPointerEnterHandler, IPoint
     {
         OnCardSelected?.Invoke(this);
     }
-
-    // ------------------------------
-    // 🔥 HOVER METHODS
-    // ------------------------------
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         Expand();
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         Collapse();
     }
-
     public void Expand()
     {
         transform.DOScale(expandedScale, animationDuration).SetEase(Ease.OutBack);
     }
-
     public void Collapse()
     {
         transform.DOScale(defaultScale, animationDuration).SetEase(Ease.OutBack);
     }
-
     private void OnDestroy()
     {
         button.onClick.RemoveListener(HandleClick);
     }
-
     public MachineData GetMachineData() => data;
 }

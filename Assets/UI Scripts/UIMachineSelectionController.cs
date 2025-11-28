@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,12 +52,11 @@ public class UIMachineSelectionController : MonoBehaviour
             var card = Instantiate(cardPrefab, cardsParent);
             card.Initialize(machineDatas[i], factory);
             RectTransform rect = card.GetComponent<RectTransform>();
-            rect.anchoredPosition = cardPositions[i];   // ← ← Posición manual
+            rect.anchoredPosition = cardPositions[i];   
             card.OnCardSelected += HandleCardSelected;
             cards.Add(card);
         }
     }
-
     private void HandleCardSelected(MachineCardController card)
     {
         selectedCard = card;
@@ -69,34 +67,29 @@ public class UIMachineSelectionController : MonoBehaviour
     #region Info Logic
     private void ShowInfo(MachineData data, MachineCardController card)
     {
-        cardsParent.gameObject.SetActive(false);   // ⬅⬅ Oculta el panel de AC/DC
+        cardsParent.gameObject.SetActive(false);   
 
         nameText.text = data.machineName;
         descriptionText.text = data.description;
         specsText.text = FormatSpecs(data);
         if (infoModelInstance != null) Destroy(infoModelInstance);
 
-        // 🟢 Instanciar modelo solo para la vista de info
+        
         infoModelInstance = Instantiate(data.modelPrefab, infoModelContainer);
         infoModelInstance.transform.localPosition = Vector3.zero;
         infoModelInstance.transform.localRotation = Quaternion.identity;
         infoModelInstance.transform.localScale = Vector3.one;
 
-        // ✔ Activar rotador SOLO AQUÍ
         var rot = infoModelInstance.GetComponent<MachineModelRotator>();
         if (rot != null) rot.enabled = true;
 
         infoPanelGO.SetActive(true);
     }
-
-
     private void CloseInfo()
     {
         infoPanelGO.SetActive(false);
-        cardsParent.gameObject.SetActive(true);   // ⬅⬅ Muestra nuevamente AC/DC
+        cardsParent.gameObject.SetActive(true);   
     }
-
-
     private string FormatSpecs(MachineData d)
     {
         var s = $"Voltage: {d.defaultVoltage}V\nCurrent: {d.defaultCurrent}A\nComponents:\n";
@@ -120,4 +113,6 @@ public class UIMachineSelectionController : MonoBehaviour
     }
     #endregion
 }
+
+
 

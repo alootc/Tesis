@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98681b42d7a629b4b8a69663c1528f47, type: 3}
+  m_Script: {fileID: 11500000, guid: 054910682f82dd94d8ff7596ab4dbbbf, type: 3}
   m_Name: DC Machine Behavior
   m_EditorClassIdentifier: 
   baseIntensity: 1
