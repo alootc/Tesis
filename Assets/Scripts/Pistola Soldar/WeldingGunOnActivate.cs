@@ -13,38 +13,17 @@ public class WeldingGunOnActivate : MonoBehaviour
     private bool isTriggerPressed = false; // Estado del gatillo
     private bool isNearMetal = false; // Indica si el fuego est� cerca de un objeto de metal
     private Vector3 metalContactPoint; // Punto de contacto con el metal
-    private bool useVR;
 
     void Start()
     {
-        useVR = InputBridge.Instance.IsVR;
-
-        if (useVR)
-        { 
-            // Obt�n el componente XRGrabInteractable y a�ade listeners para los eventos de activaci�n y desactivaci�n
-            UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabbable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
-            grabbable.activated.AddListener(StartWelding);
-            grabbable.deactivated.AddListener(StopWelding);
-
-        }
+        // Obt�n el componente XRGrabInteractable y a�ade listeners para los eventos de activaci�n y desactivaci�n
+        UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabbable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        grabbable.activated.AddListener(StartWelding);
+        grabbable.deactivated.AddListener(StopWelding);
     }
 
     void Update()
     {
-        if (!useVR)
-        {
-            if (InputBridge.Instance.TriggerPressed)
-            {
-                if (!isTriggerPressed)
-                    StartWelding(null);
-            }
-            else if (isTriggerPressed)
-            {
-                StopWelding(null);
-            }
-        }
-
-
         // Si el gatillo est� presionado y el fuego est� activo, mueve el fuego y verifica si est� cerca de un objeto de metal
         if (isTriggerPressed && currentFire != null)
         {
@@ -145,32 +124,6 @@ public class WeldingGunOnActivate : MonoBehaviour
                 Destroy(currentSparks.gameObject, currentSparks.main.duration); // Destruye las chispas despu�s de que terminen
                 currentSparks = null;
             }
-        }
-    }
-
-
-    public void StartWeldingPC()
-    {
-        isTriggerPressed = true;
-        currentFire = Instantiate(fireEffect, spawnPoint.position, spawnPoint.rotation);
-        currentFire.Play();
-        CheckForMetal();
-    }
-
-    public void StopWeldingPC()
-    {
-        isTriggerPressed = false;
-        isNearMetal = false;
-        if (currentFire != null)
-        {
-            currentFire.Stop();
-            Destroy(currentFire.gameObject, currentFire.main.duration);
-        }
-        if (currentSparks != null)
-        {
-            currentSparks.Stop();
-            Destroy(currentSparks.gameObject, currentSparks.main.duration);
-            currentSparks = null;
         }
     }
 }

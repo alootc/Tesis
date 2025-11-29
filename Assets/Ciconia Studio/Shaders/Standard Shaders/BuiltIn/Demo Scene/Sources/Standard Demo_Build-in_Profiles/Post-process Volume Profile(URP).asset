@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Post-process Volume Profile(URP)
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 4158840378476349353}
---- !u!114 &4158840378476349353
+  - {fileID: 7785936278429915101}
+--- !u!114 &7785936278429915101
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}

@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05629bb1875fe514199932384fc06d8b, type: 3}
   m_Name: Machine DataDC
   m_EditorClassIdentifier: 
-  machineName: DC
-  description: "lkfwefkewo\xF1fkhljyhgsfasdfygilkgfjgfxbfghjhjghcgnbxfcghjkjkjhmncbchjkjk,jmvncbhjjhghcngxbiolhikggncbcgiiohiggfxbfguikgfjgxfhcvjvhjgkughxgfchggjvbcfcxgfhgfhfhggfhfhgffgtfbbccbcnbvnvbvmmfvmhgffbbvcvbcvbcbnvkjhjhgbcvcvbhnvnvnvnbggbccfdgcvxfgncxgghfhdvxxrvxhghggjhh"
+  machineName: dc
+  description: lkmmdsc
   machineType: 1
   modelPrefab: {fileID: 1729961841643825501, guid: d3a18d556e574fc4095051ae53506c1a,
     type: 3}
-  defaultVoltage: 40
-  defaultCurrent: 90
+  defaultVoltage: 50
+  defaultCurrent: 100
   components:
-  - kijrjsf
-  - onjfloewfo
-  - onjfloewfo
+  - axsaxca
+  - xsax

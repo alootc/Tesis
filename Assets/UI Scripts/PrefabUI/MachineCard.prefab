@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 1511608014724994050}
   - component: {fileID: 5845239636998651418}
   - component: {fileID: 4076170238233515304}
+  - component: {fileID: 7808255637994435753}
   m_Layer: 5
   m_Name: MachineCard
   m_TagString: Untagged
@@ -310,3 +311,17 @@ MonoBehaviour:
   modelContainer: {fileID: 7571156717276211764}
   expandedScale: 1.12
   animationDuration: 0.35
+--- !u!114 &7808255637994435753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8635279130549587975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e234b82ba586fd44e83cc75d4d31cfec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 80
+  inertia: 0.95

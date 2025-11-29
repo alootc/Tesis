@@ -62,10 +62,9 @@ public class PistolaSphereCastMerge : MonoBehaviour
     void FixedUpdate()
     {
 
-        bool Press = false;
-
-        // Press = (triggerAction.action.ReadValue<float>() > 0.2f); // VR
-        Press = InputBridge.Instance.TriggerPressed;
+        // Detectar si el gatillo del controlador está presionado
+        Press = (triggerAction.action.ReadValue<float>() > 0.2f);
+        Debug.Log("Press: " + Press); // Depuración del gatillo
 
         if (Press)
         {
