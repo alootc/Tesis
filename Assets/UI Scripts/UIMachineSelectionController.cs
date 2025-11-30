@@ -100,7 +100,7 @@ public class UIMachineSelectionController : MonoBehaviour
     private void OnAccept()
     {
         MachineSelectionManager.Instance.SetMachine(selectedCard.GetMachineData());
-        FindObjectOfType<SceneLoader>()?.LoadScene("MainVR");
+        FindObjectOfType<SceneLoader>()?.LoadScene("MainVR 1");
     }
     #endregion
 

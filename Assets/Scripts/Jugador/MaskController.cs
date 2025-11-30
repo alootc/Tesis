@@ -39,7 +39,7 @@ public class MaskController : MonoBehaviour
                 AttachToFace();
             }
         }
-        Debug.Log($"Distance: {Vector3.Distance(transform.position, headTransform.position)}");
+        //Debug.Log($"Distance: {Vector3.Distance(transform.position, headTransform.position)}");
     }
 
     private void OnGrabbed(SelectEnterEventArgs args)
