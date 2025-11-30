@@ -11,7 +11,6 @@ public class MachineData : ScriptableObject
     public float defaultVoltage;
     public float defaultCurrent;
     public string[] components;
-    public IMachineBehavior behavior; 
-
+    public IMachineBehavior behavior;
 }
 public enum MachineType { AC, DC }

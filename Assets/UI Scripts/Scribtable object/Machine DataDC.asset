@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05629bb1875fe514199932384fc06d8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2be95741c5292e945b9fe6b007dfcc63, type: 3}
   m_Name: Machine DataDC
   m_EditorClassIdentifier: 
-  machineName: dc
-  description: lkmmdsc
-  machineType: 1
-  modelPrefab: {fileID: 1729961841643825501, guid: d3a18d556e574fc4095051ae53506c1a,
+  machineName: sadf
+  description: sdzxcvf
+  machineType: 0
+  modelPrefab: {fileID: 9058618928280474243, guid: fb77e4711d0f7a940b86e7934ed1da1e,
     type: 3}
-  defaultVoltage: 50
-  defaultCurrent: 100
+  defaultVoltage: 234
+  defaultCurrent: 234
   components:
-  - axsaxca
-  - xsax
+  - sdf
+  - sdfds

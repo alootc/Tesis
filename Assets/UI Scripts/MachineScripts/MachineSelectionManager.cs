@@ -26,6 +26,7 @@ public class MachineSelectionManager : MonoBehaviour
     public void SetMachine(MachineData machine)
     {
         SelectedMachine = machine;
+        SelectedMachine?.behavior?.OnStart();
         OnMachineSelected?.Invoke(machine);
     }
     // validation helper

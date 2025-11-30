@@ -1,129 +1,260 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Utilities;
 
 public class WeldingGunOnActivate : MonoBehaviour
 {
-    public ParticleSystem sparkEffect; // Efecto de part�culas para las chispas
-    public ParticleSystem fireEffect; // Efecto de part�culas para el fuego
-    public Transform spawnPoint; // Punto de origen de las chispas y el fuego
-    public AcidDecalSpawner acidDecalSpawner; // Referencia al AcidDecalSpawner
+    [Header("Efectos")]
+    public ParticleSystem sparkEffect;
+    public ParticleSystem fireEffect;
+    public Transform spawnPoint;
 
-    private ParticleSystem currentFire; // Referencia al efecto de fuego actual
-    private ParticleSystem currentSparks; // Referencia al efecto de chispas actual
-    private bool isTriggerPressed = false; // Estado del gatillo
-    private bool isNearMetal = false; // Indica si el fuego est� cerca de un objeto de metal
-    private Vector3 metalContactPoint; // Punto de contacto con el metal
+    [Header("Control de Soldadura")]
+    public AcidDecalSpawner acidDecalSpawner;
+    public ObjectPoolManager poolManagerSparks;
+    public ObjectPoolManager poolManagerFire;
+
+    // Comentado: Se necesita una referencia a PistolaSphereCastMerge para obtener la pieza impactada si no se usa el raycast directamente
+    // Usaremos el raycast directamente para obtener la pieza.
+
+    private GameObject currentFireGO;
+    private GameObject currentSparksGO;
+    private ParticleSystem currentFire;
+    private ParticleSystem currentSparks;
+
+    private bool isTriggerPressed = false;
+    private bool isNearMetal = false;
+    private Vector3 metalContactPoint;
+
+    private MachineData selectedMachineData;
+    private IMachineBehavior machineBehavior;
+
+    // Comentado: Nueva: Referencia a la pieza de metal que se está soldando actualmente
+    private NewPart currentWeldedPart = null;
 
     void Start()
     {
-        // Obt�n el componente XRGrabInteractable y a�ade listeners para los eventos de activaci�n y desactivaci�n
-        UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabbable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
+        XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
         grabbable.activated.AddListener(StartWelding);
         grabbable.deactivated.AddListener(StopWelding);
+
+        if (MachineSelectionManager.Instance != null)
+        {
+            MachineSelectionManager.Instance.OnMachineSelected += OnMachineSelected;
+            OnMachineSelected(MachineSelectionManager.Instance.SelectedMachine);
+        }
+    }
+
+    private void OnMachineSelected(MachineData machine)
+    {
+        selectedMachineData = machine;
+        machineBehavior = selectedMachineData?.behavior;
+        if (machineBehavior == null && selectedMachineData != null)
+        {
+            Debug.LogError($"La máquina '{selectedMachineData.machineName}' no tiene un IMachineBehavior asignado.");
+        }
+        else if (machineBehavior != null)
+        {
+            Debug.Log($"Comportamiento de soldadura actualizado a: {selectedMachineData.machineType}");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (MachineSelectionManager.Instance != null)
+        {
+            MachineSelectionManager.Instance.OnMachineSelected -= OnMachineSelected;
+        }
     }
 
     void Update()
     {
-        // Si el gatillo est� presionado y el fuego est� activo, mueve el fuego y verifica si est� cerca de un objeto de metal
+        if (selectedMachineData == null || machineBehavior == null) return;
+
         if (isTriggerPressed && currentFire != null)
         {
-            // Mueve el fuego junto con la pistola
-            currentFire.transform.position = spawnPoint.position;
-            currentFire.transform.rotation = spawnPoint.rotation;
+            currentFireGO.transform.position = spawnPoint.position;
+            currentFireGO.transform.rotation = spawnPoint.rotation;
 
-            // Verifica si el fuego est� cerca de un objeto de metal
             CheckForMetal();
         }
 
-        // Si el gatillo est� presionado y estamos cerca de metal, aplica el �cido
+        // Comentado: El decal ahora debe depender del comportamiento de la máquina
         if (isTriggerPressed && isNearMetal)
         {
-            acidDecalSpawner.SpawnAcidDecal(metalContactPoint); // Genera el decal de �cido en el punto de contacto
+            // Pasa el comportamiento de la máquina al decal spawner
+            acidDecalSpawner.SpawnAcidDecal(metalContactPoint, machineBehavior);
         }
     }
 
     public void StartWelding(ActivateEventArgs arg)
     {
-        // Activa el efecto de fuego
-        isTriggerPressed = true;
-        currentFire = Instantiate(fireEffect, spawnPoint.position, spawnPoint.rotation);
-        currentFire.Play(); // Reproduce el efecto de fuego
+        if (selectedMachineData == null || machineBehavior == null) return;
 
-        // Verifica si el fuego est� cerca de un objeto de metal
+        isTriggerPressed = true;
+
+        if (poolManagerFire != null && fireEffect != null)
+        {
+            currentFireGO = poolManagerFire.GetObject(spawnPoint.position, spawnPoint.rotation, spawnPoint);
+            currentFire = currentFireGO?.GetComponent<ParticleSystem>();
+
+            if (currentFire != null)
+            {
+                currentFire.Play();
+                machineBehavior.OnStart();
+            }
+        }
+        else
+        {
+            Debug.LogError("¡Falta asignar poolManagerFire!");
+        }
+
         CheckForMetal();
     }
 
     public void StopWelding(DeactivateEventArgs arg)
     {
-        // Detiene el efecto de fuego y las chispas
         isTriggerPressed = false;
         isNearMetal = false;
 
-        if (currentFire != null)
+        if (machineBehavior != null)
         {
-            currentFire.Stop(); // Detiene el fuego
-            Destroy(currentFire.gameObject, currentFire.main.duration); // Destruye el fuego despu�s de que termine
+            machineBehavior.OnStop();
         }
 
-        if (currentSparks != null)
+        // Comentado: Llama a StopWelding en la pieza ANTES de detener el arco
+        if (currentWeldedPart != null)
         {
-            currentSparks.Stop(); // Detiene las chispas
-            Destroy(currentSparks.gameObject, currentSparks.main.duration); // Destruye las chispas despu�s de que terminen
+            currentWeldedPart.StopWelding();
+            currentWeldedPart = null;
+        }
+
+        if (currentFireGO != null)
+        {
+            currentFire?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            currentFireGO.SetActive(false);
+            currentFire = null;
+            currentFireGO = null;
+        }
+
+        if (currentSparksGO != null)
+        {
+            currentSparks?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            currentSparksGO.SetActive(false);
+            currentSparks = null;
+            currentSparksGO = null;
         }
     }
 
     private void CheckForMetal()
     {
-        // Lanza un rayo desde el spawnPoint para detectar objetos de metal
         RaycastHit hit;
-        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hit, 1.0f)) // Ajusta la distancia del rayo seg�n sea necesario
+        float maxRayDistance = 1.0f;
+
+        NewPart previousWeldedPart = currentWeldedPart;
+        currentWeldedPart = null; // Reiniciar la pieza soldada en cada frame
+
+        if (selectedMachineData != null && machineBehavior != null)
         {
-            if (hit.collider.CompareTag("Metal")) // Verifica si el objeto tiene el tag "Metal"
+            // Usa la estabilidad de la máquina para modular la distancia del arco
+            float stability = machineBehavior.GetStabilityModifier(0, selectedMachineData.defaultCurrent);
+            maxRayDistance *= stability;
+            maxRayDistance = Mathf.Clamp(maxRayDistance, 0.2f, 1.5f); // Distancia máxima efectiva del arco
+        }
+
+        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hit, maxRayDistance))
+        {
+            if (hit.collider.CompareTag("Metal"))
             {
                 isNearMetal = true;
-                metalContactPoint = hit.point; // Guarda el punto de contacto con el metal
+                metalContactPoint = hit.point;
 
-                // Aplica el �cido al cubo
+                NewPart hitPart = hit.collider.GetComponent<NewPart>();
+
+                // 1. Iniciar Soldadura en la pieza si no estaba soldando o si es una pieza nueva
+                if (hitPart != null)
+                {
+                    currentWeldedPart = hitPart;
+                    if (previousWeldedPart != currentWeldedPart || !previousWeldedPart.isBeingWelded)
+                    {
+                        currentWeldedPart.StartWelding();
+                        Debug.Log($"Iniciando soldadura en pieza: {currentWeldedPart.gameObject.name}");
+                    }
+                }
+
+                // 2. Aplica el ácido (Decal)
                 CubeWeldingController cubeController = hit.collider.GetComponent<CubeWeldingController>();
                 if (cubeController != null)
                 {
-                    cubeController.ApplyAcid(); // Marca el cubo como que tiene �cido aplicado
+                    cubeController.ApplyAcid();
                 }
 
-                // Activa las chispas en la posici�n de colisi�n
-                if (currentSparks == null)
+                // 3. Modifica la Intensidad Visual del Arco (Fuego)
+                if (machineBehavior != null && currentFire != null)
                 {
-                    currentSparks = Instantiate(sparkEffect, hit.point, Quaternion.identity);
-                    currentSparks.Play(); // Reproduce el efecto de chispas
+                    float arcIntensity = machineBehavior.GetArcIntensity(hit.distance, selectedMachineData.defaultCurrent, selectedMachineData.defaultVoltage);
+                    var main = currentFire.main;
+
+                    // Comentado: La intensidad del arco modifica el tamaño del efecto
+                    main.startSizeMultiplier = 1.0f + (arcIntensity * 0.5f);
+                }
+
+                // 4. Activa las Chispas (Sparks)
+                if (currentSparksGO == null)
+                {
+                    if (poolManagerSparks != null && sparkEffect != null)
+                    {
+                        currentSparksGO = poolManagerSparks.GetObject(hit.point, Quaternion.identity, hit.transform);
+                        currentSparks = currentSparksGO?.GetComponent<ParticleSystem>();
+
+                        if (currentSparks != null)
+                        {
+                            currentSparks.Play();
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("¡Falta asignar poolManagerSparks!");
+                    }
                 }
                 else
                 {
-                    // Mueve las chispas al nuevo punto de colisi�n
-                    currentSparks.transform.position = hit.point;
+                    currentSparksGO.transform.position = hit.point;
+                    currentSparksGO.transform.parent = hit.transform;
                 }
             }
             else
             {
-                // Si el objeto no es de metal, desactiva las chispas
-                isNearMetal = false;
-                if (currentSparks != null)
-                {
-                    currentSparks.Stop(); // Detiene las chispas
-                    Destroy(currentSparks.gameObject, currentSparks.main.duration); // Destruye las chispas despu�s de que terminen
-                    currentSparks = null;
-                }
+                // Si el objeto NO es de metal (o el rayo lo pasa de largo)
+                HandleStopWeldingOnMetalMiss(previousWeldedPart);
             }
         }
         else
         {
-            // Si no hay colisi�n, desactiva las chispas
-            isNearMetal = false;
-            if (currentSparks != null)
-            {
-                currentSparks.Stop(); // Detiene las chispas
-                Destroy(currentSparks.gameObject, currentSparks.main.duration); // Destruye las chispas despu�s de que terminen
-                currentSparks = null;
-            }
+            // Si no hay colisión (arco muy largo)
+            HandleStopWeldingOnMetalMiss(previousWeldedPart);
+        }
+    }
+
+    // Comentado: Nuevo método para manejar la detención de la soldadura en la pieza al perder el contacto.
+    private void HandleStopWeldingOnMetalMiss(NewPart previousPart)
+    {
+        isNearMetal = false;
+
+        // 1. Detener soldadura en la pieza previa
+        if (previousPart != null && previousPart.isBeingWelded)
+        {
+            previousPart.StopWelding();
+        }
+
+        // 2. Detener las chispas
+        if (currentSparksGO != null)
+        {
+            currentSparks?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            currentSparksGO.SetActive(false);
+            currentSparks = null;
+            currentSparksGO = null;
         }
     }
 }

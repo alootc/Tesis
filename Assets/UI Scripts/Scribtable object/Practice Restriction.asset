@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883c99f002f83c2488e0bf8189963e33, type: 3}
-  m_Name: DC Machine Behavior
+  m_Script: {fileID: 11500000, guid: fcad00f7826299f4c8d51268d8300b0c, type: 3}
+  m_Name: Practice Restriction
   m_EditorClassIdentifier: 
-  baseIntensity: 1
-  stabilityBonus: 0.25
-  penetrationMultiplier: 1.2
+  requiredItems:
+  - {fileID: 11400000, guid: 568e2992c6fde3a41ab711ecc956d66e, type: 2}
