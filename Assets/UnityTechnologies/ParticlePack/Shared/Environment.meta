@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f899c21459ebd5f458a66d38b4fe5240
+=======
+guid: ea4371db0cabc3a44a4b4129cd1323f5
+>>>>>>> parent of 27aeec7 (avanceboton)
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,8 +1,16 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 471b302a9eb61b74c83bde6cc048c003
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
+=======
+guid: c02f45257cf2ee5498832b070d52373d
+folderAsset: yes
+timeCreated: 1475073659
+licenseType: Store
+DefaultImporter:
+>>>>>>> parent of 27aeec7 (avanceboton)
   userData: 
   assetBundleName: 
   assetBundleVariant: 
