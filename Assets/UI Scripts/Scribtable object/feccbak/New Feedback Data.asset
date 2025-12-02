@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eb26cdac7ae53e4494c8492fd09b928, type: 3}
-  m_Name: Feedback Data
+  m_Name: New Feedback Data
   m_EditorClassIdentifier: 
-  id: NO_CARETA
-  type: 0
-  messageText_ES: "\"\xA1ERROR CR\xCDTICO! Falta la careta de soldar. Peligro de
-    ceguera por el arco voltaico.\"\n"
-  displayImage: {fileID: 21300000, guid: 962d7198201944448a51b2b57b954427, type: 3}
+  id: NO_CONTACTO
+  type: 1
+  messageText_ES: "\xA1Cuidado! No tienes puesto/recogido el elemento de seguridad
+    cr\xEDtico. Peligro de quemaduras."
+  displayImage: {fileID: 21300000, guid: 1007286c832092d4ca0fcba0fad046a3, type: 3}

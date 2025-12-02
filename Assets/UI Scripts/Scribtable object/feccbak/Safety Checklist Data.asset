@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4546816e35770da45a2cb510f39c9365, type: 3}
   m_Name: Safety Checklist Data
   m_EditorClassIdentifier: 
-  requiredItems:
+  freeOrderItems: []
+  sequentialItems:
   - Careta
   moduleName: "Preparaci\xF3n SMAW"

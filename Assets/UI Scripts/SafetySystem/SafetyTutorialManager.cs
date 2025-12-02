@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-
 
 public class SafetyTutorialManager : MonoBehaviour
 {
@@ -19,8 +19,14 @@ public class SafetyTutorialManager : MonoBehaviour
     public Transform checklistContainer; // Contenedor para la lista de ítems de la UI
     public GameObject itemUIPrefab; // Prefab de la UI para cada ítem
 
+    // Esta lista registra TODOS los ítems de EPI que el jugador ha "equipado" a lo largo del juego.
     private HashSet<string> collectedItems = new HashSet<string>();
+
+    // Este contador solo se usa para la Fase 2 (Secuencial).
     private int nextSequentialIndex = 0;
+
+    // Conjunto de todos los ítems válidos para una verificación rápida.
+    private HashSet<string> allValidItems = new HashSet<string>();
 
     // Evento para notificar a la UI sobre el progreso
     public event Action<string> OnItemCollected;
@@ -39,17 +45,42 @@ public class SafetyTutorialManager : MonoBehaviour
     {
         if (MachineSelectionManager.Instance != null)
         {
-            // Solo iniciamos el tutorial si estamos en modo Práctica
+            // Subscribe to mode selection event
             MachineSelectionManager.Instance.OnModeSelected += StartTutorialIfPractice;
 
-            // Asumiendo que el modo ya fue seleccionado antes de iniciar la escena:
-            StartTutorialIfPractice(MachineSelectionManager.Instance.SelectedMode);
+            // Check if mode is already set and start immediately if in Practice
+            // Note: This line might need adaptation depending on when MachineSelectionManager sets the mode.
+            // If the mode is set in a previous scene, you might need to check the public property here.
         }
 
         if (checklistData != null)
         {
-            InitializeUI();
+            InitializeData(); // Calls data initialization and UI setup
         }
+    }
+
+    // Method to initialize the set of all valid items from both lists
+    private void InitializeData()
+    {
+        // 1. Create the set of all valid items (used for generic validation)
+        allValidItems.Clear();
+        if (checklistData.freeOrderItems != null)
+        {
+            foreach (var item in checklistData.freeOrderItems)
+            {
+                allValidItems.Add(item);
+            }
+        }
+        if (checklistData.sequentialItems != null)
+        {
+            foreach (var item in checklistData.sequentialItems)
+            {
+                allValidItems.Add(item);
+            }
+        }
+
+        // 2. Initialize UI (assuming UI logic that integrates both lists)
+        InitializeUI();
     }
 
     private void StartTutorialIfPractice(PlayMode mode)
@@ -61,121 +92,126 @@ public class SafetyTutorialManager : MonoBehaviour
         else
         {
             currentPhase = TutorialPhase.Off;
-            // Ocultar UI de tutorial si no estamos en práctica
         }
     }
 
     private void InitializeUI()
     {
-        // Limpiar contenedor y crear elementos UI para cada ítem en checklistData
+        // Logic for initializing the UI of the checklist (omitting the actual prefab creation)
         foreach (Transform child in checklistContainer)
         {
             Destroy(child.gameObject);
         }
-
-        foreach (var item in checklistData.requiredItems)
-        {
-            // Crear instancia de itemUIPrefab (debe tener un TextMeshPro para el nombre del ítem)
-            // GameObject uiItem = Instantiate(itemUIPrefab, checklistContainer);
-            // uiItem.GetComponentInChildren<TextMeshProUGUI>().text = item;
-            // Se asume esta UI está lista en la escena
-        }
+        // ... (Your code to create UI elements)
     }
 
     public void StartPhase(TutorialPhase phase)
     {
         currentPhase = phase;
-        collectedItems.Clear();
-        nextSequentialIndex = 0;
+        nextSequentialIndex = 0; // Always reset the sequential index
 
         if (phase == TutorialPhase.FreeOrder)
         {
+            collectedItems.Clear(); // <-- Only cleared when starting the tutorial from scratch (Phase 1)
             phaseText.text = "FASE 1: Colección Libre de EPI";
-            Debug.Log("[SAFETY TUTORIAL] Fase 1 Iniciada: Colección Libre");
+            Debug.Log("[SAFETY TUTORIAL] Phase 1 Started: Free Collection. EPI list cleared.");
         }
         else if (phase == TutorialPhase.Sequential)
         {
+            // collectedItems is NOT cleared. Items collected in Phase 1 are still valid for welding.
             phaseText.text = "FASE 2: Colección Secuencial de EPI";
-            Debug.Log("[SAFETY TUTORIAL] Fase 2 Iniciada: Colección Secuencial");
+            Debug.Log("[SAFETY TUTORIAL] Phase 2 Started: Sequential Collection. Phase 1 items MAINTAINED.");
         }
     }
 
     public void MarkItemCollected(string itemID)
     {
-        if (currentPhase == TutorialPhase.Off || collectedItems.Contains(itemID))
+        // 1. Handle collection or order
+        bool isAlreadyCollected = collectedItems.Contains(itemID);
+        bool shouldProgress = false;
+
+        if (currentPhase == TutorialPhase.Off)
         {
-            Debug.Log($"[SAFETY TUTORIAL] Ignorando recolección de '{itemID}'. Fase OFF o ítem ya recogido.");
+            Debug.Log($"[SAFETY TUTORIAL] Ignoring collection of '{itemID}'. Phase OFF.");
             return;
         }
 
-        bool success = false;
+        // The item must be a valid safety item or sequential step
+        if (!allValidItems.Contains(itemID))
+        {
+            Debug.LogWarning($"[SAFETY TUTORIAL] Item '{itemID}' is not a valid safety element in any phase.");
+            return;
+        }
+
 
         if (currentPhase == TutorialPhase.FreeOrder)
         {
-            success = checklistData.requiredItems.Contains(itemID);
+            // Phase 1 only progresses if the item is in the FreeOrder list and has not been collected.
+            if (isAlreadyCollected || !checklistData.freeOrderItems.Contains(itemID)) return;
+
+            collectedItems.Add(itemID); // Register as "equipped"
+            shouldProgress = true;
+            Debug.Log($"[SAFETY TUTORIAL] Item successfully collected: {itemID} (Free Phase).");
         }
         else if (currentPhase == TutorialPhase.Sequential)
         {
-            // Verificar si es el siguiente ítem en la secuencia
-            if (nextSequentialIndex < checklistData.requiredItems.Count && checklistData.requiredItems[nextSequentialIndex] == itemID)
+            // Phase 2 only progresses if the item is the next one in the Sequential list.
+
+            if (nextSequentialIndex < checklistData.sequentialItems.Count && checklistData.sequentialItems[nextSequentialIndex] == itemID)
             {
-                success = true;
+                // Correct Order: Progress the sequence and register the item if it wasn't already.
+                if (!isAlreadyCollected)
+                {
+                    collectedItems.Add(itemID); // Register as "equipped" if it's an equipment step
+                }
                 nextSequentialIndex++;
+                shouldProgress = true;
+                Debug.Log($"[SAFETY TUTORIAL] Correct item in sequence: {itemID}. Progress: {nextSequentialIndex}/{checklistData.sequentialItems.Count}");
             }
-            else if (checklistData.requiredItems.Contains(itemID) && !collectedItems.Contains(itemID))
+            else if (checklistData.sequentialItems.Contains(itemID) && !isAlreadyCollected)
             {
-                // Feedback si el orden es incorrecto
-                Debug.LogWarning($"[SAFETY TUTORIAL] ¡Orden Incorrecto! Esperaba: {checklistData.requiredItems[nextSequentialIndex]}, Recogió: {itemID}");
-                // Aquí podrías llamar al FeedbackManager con un mensaje de advertencia específico si lo deseas.
-                return;
+                // Incorrect order
+                Debug.LogWarning($"[SAFETY TUTORIAL] Incorrect Order! Expected: {checklistData.sequentialItems[nextSequentialIndex]}, Collected: {itemID}");
+                return; // No progress if the order is incorrect
             }
+            // If the item is already collected and not the next one, it is simply ignored.
         }
 
-        if (success)
+        // 2. Check phase completion
+        if (shouldProgress)
         {
-            collectedItems.Add(itemID);
             OnItemCollected?.Invoke(itemID);
 
-            Debug.Log($"[SAFETY TUTORIAL] Ítem recogido con éxito: {itemID}. Total: {collectedItems.Count}/{checklistData.requiredItems.Count}");
-
-            // Verificar finalización de fase
-            if (collectedItems.Count >= checklistData.requiredItems.Count)
+            // PHASE 1: Completes when all items in freeOrderItems have been collected.
+            // Uses LINQ to count only the collected items that belong to the freeOrderItems list.
+            if (currentPhase == TutorialPhase.FreeOrder && collectedItems.Count(item => checklistData.freeOrderItems.Contains(item)) >= checklistData.freeOrderItems.Count)
             {
-                if (currentPhase == TutorialPhase.FreeOrder)
-                {
-                    Debug.Log("[SAFETY TUTORIAL] Fase 1 Completada. Iniciando Fase 2.");
-                    StartPhase(TutorialPhase.Sequential);
-                }
-                else if (currentPhase == TutorialPhase.Sequential)
-                {
-                    Debug.Log("[SAFETY TUTORIAL] Fase 2 Completada. Tutorial de Seguridad FINALIZADO.");
-                    currentPhase = TutorialPhase.Off; // Tutorial completado
-                }
+                Debug.Log("[SAFETY TUTORIAL] Phase 1 (Collection) Completed. Starting Phase 2 (Sequential).");
+                StartPhase(TutorialPhase.Sequential);
+            }
+            // PHASE 2: Completes when the sequence index reaches the end of sequentialItems.
+            else if (currentPhase == TutorialPhase.Sequential && nextSequentialIndex >= checklistData.sequentialItems.Count)
+            {
+                Debug.Log("[SAFETY TUTORIAL] Phase 2 (Sequential) Completed. Safety Tutorial FINISHED.");
+                currentPhase = TutorialPhase.Off; // Tutorial completed
             }
         }
-        else
-        {
-            Debug.LogWarning($"[SAFETY TUTORIAL] Ítem '{itemID}' no es parte de la lista requerida o la lógica de fase falló.");
-        }
     }
 
-    // Método que usa WeldingSafetyGuard para verificar si se puede soldar.
-    public bool AreAllItemsCollected()
-    {
-        if (currentPhase == TutorialPhase.Off || checklistData == null)
-        {
-            // Si el tutorial está apagado (Ej: Modo Evaluación), asumimos que el EPI es verificable por otros medios o es opcional.
-            return true;
-        }
-
-        return collectedItems.Count >= checklistData.requiredItems.Count;
-    }
-
-    // Método para verificar la existencia de un ítem específico para el WeldingSafetyGuard
+    // Method used by WeldingSafetyGuard to verify a specific item
     public bool HasItem(string itemID)
     {
+        // If the tutorial is off (completed or in Evaluation mode), allow welding.
+        if (currentPhase == TutorialPhase.Off) return true;
+
+        // If the tutorial is active, verify if the item is in the collected EPI list.
         bool result = collectedItems.Contains(itemID);
-        Debug.Log($"[SAFETY TUTORIAL CHECK] Verificando ítem '{itemID}': Resultado -> {result}");
         return result;
+    }
+
+    // Auxiliary method to allow other scripts (like the UI) to know the status.
+    public bool IsItemCollected(string itemID)
+    {
+        return collectedItems.Contains(itemID);
     }
 }

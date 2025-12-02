@@ -2,95 +2,177 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
-
-using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections.Generic;
-
-// Este script se adjunta a la pistola de soldar para verificar la seguridad antes de permitir el arco.
+[DefaultExecutionOrder(-100)]
 public class WeldingSafetyGuard : MonoBehaviour
 {
     [Header("Configuración de Seguridad")]
-    [Tooltip("Lista de FeedbackData para los ítems de seguridad (Ej: NO_CARETA, NO_GUANTES).")]
+    [Tooltip("Lista de FeedbackData para los ítems de seguridad (Ej: NO_CARETA, NO_GUANTES, NO_CASCO_OSCURO).")]
     public List<FeedbackData> safetyViolationFeedback;
 
     [Tooltip("IDs de los ítems de seguridad CRÍTICOS (Ej: Careta, Guantes).")]
     public List<string> criticalItems;
 
+    [Header("Componentes Específicos")]
+    // **NUEVO CAMPO:** Referencia al script de la Careta/Casco de Soldadura. ¡Debes asignarlo en el Inspector!
+    [Tooltip("Referencia al componente que maneja el oscurecimiento del casco de soldar.")]
+    public WeldingHelmet weldingHelmet;
+
     private XRGrabInteractable grabbable;
+    private WeldingGunOnActivate weldingGun;
+    private PistolaSphereCastMerge sphereCastMerge;
 
     void Start()
     {
         grabbable = GetComponent<XRGrabInteractable>();
-        if (grabbable != null)
+        weldingGun = GetComponent<WeldingGunOnActivate>();
+        sphereCastMerge = GetComponent<PistolaSphereCastMerge>();
+
+        if (grabbable != null && weldingGun != null)
         {
-            // Reemplazamos la llamada directa a StartWelding por una verificación segura
-            // Asegurarse de que WeldingGunOnActivate esté presente antes de intentar remover el Listener.
-            var weldingGun = GetComponent<WeldingGunOnActivate>();
-            if (weldingGun != null)
+            // --- BLOQUE CRÍTICO DE INTERCEPTACIÓN ---
+
+            // 1. Intentamos remover el listener original de la pistola. 
+            for (int i = 0; i < 5; i++)
             {
-                grabbable.activated.RemoveListener(weldingGun.StartWelding); // Remover la conexión directa
-                grabbable.activated.AddListener(AttemptStartWelding);
+                grabbable.activated.RemoveListener(weldingGun.StartWelding);
             }
-            else
+
+            // 2. Conectamos el gatillo SOLO a nuestro método de verificación.
+            grabbable.activated.AddListener(AttemptStartWelding);
+
+            Debug.Log("[SAFETY GUARD] Inicialización OK. Conexión de activación interceptada exitosamente.");
+
+            // INICIALIZACIÓN CRÍTICA: Bloquear la soldadura por defecto hasta que se compruebe la seguridad.
+            if (sphereCastMerge != null)
             {
-                Debug.LogError("[SAFETY GUARD] No se encontró WeldingGunOnActivate en el mismo GameObject. El sistema de seguridad no funcionará correctamente.");
+                sphereCastMerge.IsWeldingAllowed = false;
             }
+        }
+        else
+        {
+            Debug.LogError("[SAFETY GUARD ERROR] Faltan componentes (WeldingGunOnActivate o XRGrabInteractable). El sistema de seguridad NO funcionará correctamente.");
         }
     }
 
+    // Método que WeldingGunOnActivate debería llamar para detener la soldadura (si se implementara la detención)
+    public void StopWelding(DeactivateEventArgs arg)
+    {
+        // Al detener la soldadura, siempre la desactivamos en la pistola
+        if (sphereCastMerge != null)
+        {
+            sphereCastMerge.IsWeldingAllowed = false;
+        }
+        weldingGun?.StopWelding(arg);
+    }
+
+    private bool IsMetalReadyForWeld()
+    {
+        if (sphereCastMerge == null)
+        {
+            Debug.LogWarning("[SAFETY GUARD] PistolaSphereCastMerge es NULL. Asumiendo contacto con metal OK.");
+            return true;
+        }
+        return sphereCastMerge.IsReadyToWeld();
+    }
+
+
     public void AttemptStartWelding(ActivateEventArgs arg)
     {
-        bool canWeld = true;
+        bool canWeldEPI = true;
         string missingItemId = null;
 
+        Debug.Log("=================================================");
         Debug.Log("[SAFETY GUARD] Intento de soldadura detectado. Verificando EPI...");
 
-        // 1. Verificar ítems de seguridad CRÍTICOS
+        // 1. Verificar ítems de seguridad CRÍTICOS (EPI)
         if (SafetyTutorialManager.Instance != null)
         {
             foreach (var itemID in criticalItems)
             {
-                if (!SafetyTutorialManager.Instance.HasItem(itemID))
+                bool hasItem = SafetyTutorialManager.Instance.HasItem(itemID);
+                Debug.Log($"[SAFETY CHECK] Buscando ítem: '{itemID}' | ¿Encontrado?: {hasItem}");
+
+                if (!hasItem)
                 {
-                    canWeld = false;
-                    missingItemId = itemID; // Guarda el primer error encontrado
+                    canWeldEPI = false;
+                    missingItemId = itemID;
                     break;
                 }
             }
         }
         else
         {
-            Debug.LogError("[SAFETY GUARD] SafetyTutorialManager.Instance es NULL. La verificación de seguridad no se puede realizar.");
-            canWeld = true; // Permite soldar si el manager no está inicializado (puede ser un error de inicialización)
+            Debug.LogError("[SAFETY GUARD ERROR] SafetyTutorialManager.Instance es NULL. PERMITIENDO SOLDADURA POR DEFECTO (RIESGO).");
+            canWeldEPI = true;
+        }
+
+        // 1b. **NUEVA VERIFICACIÓN CRÍTICA:** Si la careta es un ítem crítico Y está presente, verificar que esté oscura.
+        if (canWeldEPI && weldingHelmet != null && criticalItems.Contains("Careta"))
+        {
+            // Verificamos si la careta está en la lista de ítems ya recolectados.
+            bool helmetCollected = SafetyTutorialManager.Instance?.HasItem("Careta") ?? true;
+
+            if (helmetCollected && !weldingHelmet.IsDarkened)
+            {
+                canWeldEPI = false;
+                missingItemId = "NO_CASCO_OSCURO"; // ID de feedback específico
+                Debug.LogWarning("[SAFETY CHECK] Careta puesta, pero el panel NO está oscuro.");
+            }
         }
 
 
-        if (canWeld)
+        if (canWeldEPI)
         {
-            Debug.Log("[SAFETY GUARD] Verificación de EPI exitosa. Iniciando soldadura.");
-            // 2. Si es seguro, permitir que la pistola inicie el proceso de soldadura real
-            GetComponent<WeldingGunOnActivate>()?.StartWelding(arg);
+            // 2. EPI OK: Verificar el contacto con el metal
+            if (IsMetalReadyForWeld())
+            {
+                // TODO OK: Activamos la soldadura y llamamos al método original de la pistola.
+                if (sphereCastMerge != null)
+                {
+                    sphereCastMerge.IsWeldingAllowed = true;
+                }
+
+                Debug.Log("[SAFETY GUARD ÉXITO] EPI y Contacto con Metal OK. Iniciando soldadura.");
+                weldingGun?.StartWelding(arg);
+            }
+            else
+            {
+                // Contacto fallido: BLOQUEO.
+                if (sphereCastMerge != null) sphereCastMerge.IsWeldingAllowed = false;
+
+                Debug.Log("[SAFETY GUARD VIOLACIÓN] BLOQUEANDO SOLDADURA. No hay contacto válido con el metal (SphereCastMerge).");
+                ShowViolationFeedback("NO_CONTACTO");
+            }
         }
         else
         {
-            Debug.Log($"[SAFETY GUARD] Violación de seguridad detectada: Falta '{missingItemId}'. Bloqueando soldadura.");
-            // 3. Si no es seguro, mostrar feedback de violación
+            // 3. EPI Faltante/Casco Claro: Bloqueo de seguridad definitivo.
+            if (sphereCastMerge != null)
+            {
+                // Bloqueamos la lógica de FixedUpdate de la pistola. ESTE ES EL BLOQUEO CRÍTICO.
+                sphereCastMerge.IsWeldingAllowed = false;
+            }
+
+            Debug.Log($"[SAFETY GUARD VIOLACIÓN] BLOQUEANDO SOLDADURA. Falta ítem crítico/condición: '{missingItemId}'.");
             ShowViolationFeedback(missingItemId);
-            // Prevenir el inicio del arco
         }
+        Debug.Log("=================================================");
     }
 
-    private void ShowViolationFeedback(string missingItemId)
+    private void ShowViolationFeedback(string missingItemIdOrCode)
     {
         if (FeedbackManager.Instance == null)
         {
-            Debug.LogError("[SAFETY GUARD] FeedbackManager.Instance es NULL. No se puede mostrar el mensaje de violación.");
+            Debug.LogError("[SAFETY GUARD ERROR] FeedbackManager.Instance es NULL.");
             return;
         }
 
-        // Buscar el mensaje de feedback correspondiente
-        FeedbackData violation = safetyViolationFeedback.Find(d => d.id == $"NO_{missingItemId.ToUpper()}");
+        // Aseguramos que el ID de feedback tenga el prefijo NO_
+        string feedbackId = missingItemIdOrCode.StartsWith("NO_") ? missingItemIdOrCode : $"NO_{missingItemIdOrCode.ToUpper()}";
+
+        Debug.Log($"[SAFETY GUARD] Buscando Feedback con ID: {feedbackId}");
+
+        FeedbackData violation = safetyViolationFeedback.Find(d => d.id == feedbackId);
 
         if (violation != null)
         {
@@ -98,12 +180,13 @@ public class WeldingSafetyGuard : MonoBehaviour
         }
         else
         {
-            // Feedback genérico si no se encuentra uno específico
+            Debug.LogError($"[SAFETY GUARD ERROR] No se encontró el FeedbackData con ID: '{feedbackId}'.");
+
             FeedbackData genericError = ScriptableObject.CreateInstance<FeedbackData>();
             genericError.type = FeedbackType.Error;
-            genericError.messageText_ES = $"ERROR CRÍTICO: Falta el equipo de seguridad: {missingItemId}. (ID de Feedback no encontrado)";
+            genericError.messageText_ES = $"ERROR CRÍTICO: Condición de bloqueo fallida: {missingItemIdOrCode}.";
             FeedbackManager.Instance.ShowFeedback(genericError);
-            Destroy(genericError); // Destruir la instancia temporal
+            Destroy(genericError);
         }
     }
 }
