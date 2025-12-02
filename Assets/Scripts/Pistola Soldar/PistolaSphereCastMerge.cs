@@ -20,7 +20,7 @@ public class PistolaSphereCastMerge : MonoBehaviour
     float FrameRate = 0;
     public float Rate;
     public ObjectPoolManager _ObjectPoolManager;
-
+    
 
     private NewPart currentPart;
     // Comentado: Se eliminan las referencias de UI (voltageText, speedText, etc.) para simplificar por ahora la conexión
@@ -37,20 +37,35 @@ public class PistolaSphereCastMerge : MonoBehaviour
 
     // Comentado: Nuevo campo para la máquina seleccionada
     private MachineData selectedMachine;
-
+    private bool _weldingAllowed = false;
     [System.Serializable]
+
     public class NewPartInfo
     {
         public string partName;
         public Sprite partImage;
     }
 
-
+    public bool IsWeldingAllowed
+    {
+        get => _weldingAllowed;
+        set
+        {
+            _weldingAllowed = value;
+            // Si se desactiva, detenemos inmediatamente las chispas para asegurar el bloqueo visual.
+            if (!_weldingAllowed)
+            {
+                if (Spark != null && Spark.isPlaying) Spark.Stop();
+            }
+            Debug.Log($"[PISTOLA] El estado de 'IsWeldingAllowed' ha sido establecido a: {_weldingAllowed}");
+        }
+    }
     /////
     // Variables de soldadura - Comentado: Se eliminan las variables de soldadura fijas.
     // public float voltage = 22.0f;
     // public float wireSpeed = 385f;
     public string weldingResult = "65% regular"; // Comentado: Se mantiene el resultado, aunque podría depender de la máquina
+    private bool isTouchingMetal;
 
     public bool IsWelding() => Press;
     // Comentado: Los métodos ahora obtienen los valores de la máquina seleccionada
@@ -83,7 +98,10 @@ public class PistolaSphereCastMerge : MonoBehaviour
             MachineSelectionManager.Instance.OnMachineSelected -= OnMachineSelected;
         }
     }
-
+    public bool IsReadyToWeld()
+    {
+        return isTouchingMetal;
+    }
     // Comentado: Método para manejar la selección de la máquina
     private void OnMachineSelected(MachineData machine)
     {
@@ -104,6 +122,9 @@ public class PistolaSphereCastMerge : MonoBehaviour
 
     void FixedUpdate()
     {
+
+
+
         // Comentado: Verificar si se ha seleccionado una máquina antes de simular la soldadura
         if (selectedMachine == null)
         {
@@ -115,73 +136,86 @@ public class PistolaSphereCastMerge : MonoBehaviour
         // Detectar si el gatillo del controlador está presionado
         Press = (triggerAction.action.ReadValue<float>() > 0.2f);
         // Debug.Log("Press: " + Press); // Depuración del gatillo
-
-        if (Press)
+        if (IsWeldingAllowed)
         {
-            normales = Vector3.zero;
-            RaycastHit[] hits;
-            Vector3 direction = pivot.forward;
-
-            hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
-            detectedObjects.Clear();
-
-            foreach (RaycastHit hit in hits)
+            if (Press)
             {
-                if (!detectedObjects.Contains(hit.collider.gameObject))
+                normales = Vector3.zero;
+                RaycastHit[] hits;
+                Vector3 direction = pivot.forward;
+
+                hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
+                detectedObjects.Clear();
+
+                foreach (RaycastHit hit in hits)
                 {
-                    detectedObjects.Add(hit.collider.gameObject);
+                    if (!detectedObjects.Contains(hit.collider.gameObject))
+                    {
+                        detectedObjects.Add(hit.collider.gameObject);
+                    }
+                    normales += hit.normal;
                 }
-                normales += hit.normal;
-            }
 
-            if (detectedObjects.Count == 2)
-            {
-                MergeObjects(detectedObjects[0], detectedObjects[1]);
-            }
-
-            if (detectedObjects.Count > 0)
-            {
-                RaycastHit hit = hits[0]; // Toma el primer impacto
-                Quaternion rotation = Quaternion.LookRotation(normales, Vector3.up);
-
-                // Comentado: Aquí podrías usar GetArcIntensity del behavior
-                // float arcIntensity = selectedMachine.behavior.GetArcIntensity(hit.distance, GetWireSpeed(), GetVoltage());
-                // Debug.Log($"Intensidad del Arco: {arcIntensity}");
-
-                Spark.transform.position = hit.point;
-                Spark.transform.rotation = rotation;
-
-                if (FrameRate > Rate)
+                if (detectedObjects.Count == 2)
                 {
-                    // Comentado: Asegurar que el objeto padre sea el primer objeto detectado o el objeto de soldadura
-                    _ObjectPoolManager?.GetObject(hit.point, Quaternion.identity, detectedObjects[0].transform);
-                    FrameRate = 0;
+                    MergeObjects(detectedObjects[0], detectedObjects[1]);
                 }
-                FrameRate += Time.deltaTime;
 
-                // Debug.Log("Activando partículas en: " + Spark.transform.position);
-                if (!Spark.isPlaying)
+                if (detectedObjects.Count > 0)
                 {
-                    Spark.Play();
+                    RaycastHit hit = hits[0]; // Toma el primer impacto
+                    Quaternion rotation = Quaternion.LookRotation(normales, Vector3.up);
+
+                    // Comentado: Aquí podrías usar GetArcIntensity del behavior
+                    // float arcIntensity = selectedMachine.behavior.GetArcIntensity(hit.distance, GetWireSpeed(), GetVoltage());
+                    // Debug.Log($"Intensidad del Arco: {arcIntensity}");
+
+                    Spark.transform.position = hit.point;
+                    Spark.transform.rotation = rotation;
+
+                    if (FrameRate > Rate)
+                    {
+                        // Comentado: Asegurar que el objeto padre sea el primer objeto detectado o el objeto de soldadura
+                        _ObjectPoolManager?.GetObject(hit.point, Quaternion.identity, detectedObjects[0].transform);
+                        FrameRate = 0;
+                    }
+                    FrameRate += Time.deltaTime;
+
+                    // Debug.Log("Activando partículas en: " + Spark.transform.position);
+                    if (!Spark.isPlaying)
+                    {
+                        Spark.Play();
+                    }
+                }
+                else
+                {
+                    // Si el gatillo está presionado pero no hay colisión, detener partículas
+                    if (Spark.isPlaying)
+                    {
+                        Spark.Stop();
+                    }
                 }
             }
             else
             {
-                // Si el gatillo está presionado pero no hay colisión, detener partículas
                 if (Spark.isPlaying)
                 {
                     Spark.Stop();
+                    // Debug.Log("Deteniendo partículas");
                 }
             }
+
         }
-        else
+        else // Bloqueado por seguridad: Aseguramos que las chispas estén apagadas.
         {
-            if (Spark.isPlaying)
+            if (Spark != null && Spark.isPlaying)
             {
                 Spark.Stop();
-                // Debug.Log("Deteniendo partículas");
             }
         }
+
+
+
     }
 
     void MergeObjects(GameObject obj1, GameObject obj2)

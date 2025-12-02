@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "XRI Default Input Actions",
     "maps": [
         {
@@ -2354,7 +2355,7 @@
                     "name": "Teleport Mode Cancel",
                     "type": "Button",
                     "id": "d587b60c-39a0-4365-8075-477ce484ba0f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -3331,6 +3332,34 @@
                     "action": "Spawn Object",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Xr",
+            "id": "bed4d00f-f504-44a3-8bd1-9fab3238ce84",
+            "actions": [
+                {
+                    "name": "zzzz",
+                    "type": "Button",
+                    "id": "c97dc854-a585-414b-b645-eaa720234dac",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2522b18c-46b0-40e8-89ce-c3e075a61994",
+                    "path": "<XRController>/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "zzzz",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
