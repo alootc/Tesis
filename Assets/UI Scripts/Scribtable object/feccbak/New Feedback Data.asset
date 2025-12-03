@@ -16,4 +16,4 @@ MonoBehaviour:
   type: 1
   messageText_ES: "\xA1Cuidado! No tienes puesto/recogido el elemento de seguridad
     cr\xEDtico. Peligro de quemaduras."
-  displayImage: {fileID: 21300000, guid: 1007286c832092d4ca0fcba0fad046a3, type: 3}
+  displayImage: {fileID: 21300000, guid: e484876f0cfbe8d46981ae0062b5e77f, type: 3}

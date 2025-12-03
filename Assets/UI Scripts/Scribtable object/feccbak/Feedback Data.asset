@@ -16,4 +16,4 @@ MonoBehaviour:
   type: 0
   messageText_ES: "\"\xA1ERROR CR\xCDTICO! Falta la careta de soldar. Peligro de
     ceguera por el arco voltaico.\"\n"
-  displayImage: {fileID: 21300000, guid: 962d7198201944448a51b2b57b954427, type: 3}
+  displayImage: {fileID: 21300000, guid: 39939fe0b3df2b741aca15c2accaf90a, type: 3}
