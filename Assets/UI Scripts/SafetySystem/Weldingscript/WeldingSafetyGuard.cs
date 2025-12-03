@@ -13,7 +13,7 @@ public class WeldingSafetyGuard : MonoBehaviour
     public List<string> criticalItems;
 
     [Header("Componentes Específicos")]
-    // **NUEVO CAMPO:** Referencia al script de la Careta/Casco de Soldadura. ¡Debes asignarlo en el Inspector!
+    // **Mantener el campo público para la asignación manual, pero ahora buscamos automáticamente si es nulo.**
     [Tooltip("Referencia al componente que maneja el oscurecimiento del casco de soldar.")]
     public WeldingHelmet weldingHelmet;
 
@@ -26,6 +26,22 @@ public class WeldingSafetyGuard : MonoBehaviour
         grabbable = GetComponent<XRGrabInteractable>();
         weldingGun = GetComponent<WeldingGunOnActivate>();
         sphereCastMerge = GetComponent<PistolaSphereCastMerge>();
+
+        // --- CORRECCIÓN CRÍTICA DE REFERENCIA ---
+        // 1. Si la referencia no fue asignada manualmente, intentamos buscarla en la escena.
+        if (weldingHelmet == null)
+        {
+            weldingHelmet = FindObjectOfType<WeldingHelmet>();
+            if (weldingHelmet != null)
+            {
+                Debug.Log("[SAFETY GUARD] Auto-asignación de WeldingHelmet exitosa.");
+            }
+            else
+            {
+                Debug.LogError("[SAFETY GUARD ERROR] No se encontró WeldingHelmet en la escena. La verificación de oscurecimiento fallará.");
+            }
+        }
+        // ----------------------------------------
 
         if (grabbable != null && weldingGun != null)
         {
@@ -84,7 +100,7 @@ public class WeldingSafetyGuard : MonoBehaviour
         Debug.Log("=================================================");
         Debug.Log("[SAFETY GUARD] Intento de soldadura detectado. Verificando EPI...");
 
-        // 1. Verificar ítems de seguridad CRÍTICOS (EPI)
+        // 1. Verificar ítems de seguridad CRÍTICOS (EPI general)
         if (SafetyTutorialManager.Instance != null)
         {
             foreach (var itemID in criticalItems)
@@ -106,17 +122,28 @@ public class WeldingSafetyGuard : MonoBehaviour
             canWeldEPI = true;
         }
 
-        // 1b. **NUEVA VERIFICACIÓN CRÍTICA:** Si la careta es un ítem crítico Y está presente, verificar que esté oscura.
-        if (canWeldEPI && weldingHelmet != null && criticalItems.Contains("Careta"))
+        // 1b. **VERIFICACIÓN CRÍTICA:** Si la careta es un ítem crítico Y está presente, verificar que esté oscura.
+        // Solo hacemos esta verificación si la primera fase de EPI fue exitosa (canWeldEPI == true)
+        if (canWeldEPI && criticalItems.Contains("Careta"))
         {
-            // Verificamos si la careta está en la lista de ítems ya recolectados.
+            // Verificamos si la careta está en la lista de ítems ya recolectados (debería ser true aquí)
             bool helmetCollected = SafetyTutorialManager.Instance?.HasItem("Careta") ?? true;
 
-            if (helmetCollected && !weldingHelmet.IsDarkened)
+            if (helmetCollected && weldingHelmet != null)
             {
+                if (!weldingHelmet.IsDarkened) // <--- ¡La comprobación que fallaba!
+                {
+                    canWeldEPI = false;
+                    missingItemId = "NO_CASCO_OSCURO"; // ID de feedback específico
+                    Debug.LogWarning("[SAFETY CHECK] Careta puesta, pero el panel NO está oscuro.");
+                }
+            }
+            else if (helmetCollected && weldingHelmet == null)
+            {
+                // Esto solo ocurriría si el casco se pierde en la escena
+                Debug.LogError("[SAFETY CHECK] Careta puesta (según Manager), pero la referencia del script WeldingHelmet es NULL. Asumiendo peligro.");
                 canWeldEPI = false;
-                missingItemId = "NO_CASCO_OSCURO"; // ID de feedback específico
-                Debug.LogWarning("[SAFETY CHECK] Careta puesta, pero el panel NO está oscuro.");
+                missingItemId = "NO_CASCO_OSCURO_REF_ERROR";
             }
         }
 
