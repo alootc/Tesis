@@ -495,8 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &66677033
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3715,8 +3714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &666147034
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6383,6 +6381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86be97dbba3edd94e936e7a4ca464cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decalPoolManager: {fileID: 0}
   decalPrefab: {fileID: 5109751603442714123, guid: fa8781ad2b475d54ebab5ba3a62bd01b,
     type: 3}
   spawnInterval: 0.1
@@ -6402,6 +6401,8 @@ MonoBehaviour:
   fireEffect: {fileID: 198714428842437537}
   spawnPoint: {fileID: 642831353}
   acidDecalSpawner: {fileID: 0}
+  poolManagerSparks: {fileID: 0}
+  poolManagerFire: {fileID: 0}
 --- !u!114 &879139165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6597,21 +6598,6 @@ MonoBehaviour:
   IsGizmo: 1
   Rate: 0.25
   _ObjectPoolManager: {fileID: 1600439330}
-  voltageText: {fileID: 1194696547}
-  speedText: {fileID: 832554140}
-  timeText: {fileID: 1937018169}
-  resultText: {fileID: 1901863396}
-  panelImage: {fileID: 1005230515}
-  defaultImage: {fileID: 21300000, guid: 629e300627dae1946a5aa249bba1ef5b, type: 3}
-  partInfos:
-  - partName: Texto Atope
-    partImage: {fileID: 21300000, guid: 629e300627dae1946a5aa249bba1ef5b, type: 3}
-  - partName: Texto Esquina
-    partImage: {fileID: 21300000, guid: 41a710f3285e16748a358273e0a3a359, type: 3}
-  - partName: Texto T
-    partImage: {fileID: 21300000, guid: 49b760dcef38592409ed08afbe171839, type: 3}
-  voltage: 22
-  wireSpeed: 385
   weldingResult: 65% regular
 --- !u!1 &884848473
 GameObject:
@@ -8457,8 +8443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &1132221970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10273,8 +10258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!1 &1348526993
 GameObject:
   m_ObjectHideFlags: 0
@@ -14321,8 +14305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &1881493821
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16068,8 +16051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &2079615929
 BoxCollider:
   m_ObjectHideFlags: 0

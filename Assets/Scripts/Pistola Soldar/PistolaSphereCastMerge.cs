@@ -6,46 +6,50 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables; // Necesario para XRGrab
 
 public class PistolaSphereCastMerge : MonoBehaviour
 {
+    [Header("Configuración de Detección")]
     public float sphereRadius = 1.0f; // Radio del SphereCast
     public float maxDistance = 5.0f;  // Distancia máxima del SphereCast
     public LayerMask layerMask; // Define qué capas detectar
-    private List<GameObject> detectedObjects = new List<GameObject>();
-    public Transform pivot;
-    bool Press;
+    public Transform pivot; // Punto de origen del SphereCast
+
+    [Header("Componentes de Soldadura")]
     public ParticleSystem Spark;
-
-    [SerializeField] private InputActionReference triggerAction; // Referencia al botón del gatillo
-    Vector3 normales = Vector3.zero;
-    public bool IsGizmo = false;
-    float FrameRate = 0;
-    public float Rate;
     public ObjectPoolManager _ObjectPoolManager;
-    
+    [SerializeField] private InputActionReference triggerAction; // Referencia al botón del gatillo
 
-    private NewPart currentPart;
-    // Comentado: Se eliminan las referencias de UI (voltageText, speedText, etc.) para simplificar por ahora la conexión
-    // pero se pueden reintegrar fácilmente.
-    /*
-    public Text voltageText;
-    public Text speedText;
-    public Text timeText;
-    public Text resultText;
-    public Image panelImage;
-    public Sprite defaultImage;  // Imagen por defecto
-    public List<NewPartInfo> partInfos; // Lista de cubos con imágenes
-    */
+    // --- Nuevas Variables para Ajuste Visual (Usa sparkRightOffset para corregir el desplazamiento) ---
+    [Header("Ajuste Visual del Spark")]
+    [Tooltip("Levanta ligeramente la chispa de la superficie, a lo largo de la normal de impacto. Útil para evitar que la chispa se corte con el metal.")]
+    public float sparkNormalOffset = 0.01f;
+    [Tooltip("Mueve la chispa lateralmente (derecha/izquierda) en relación con el pivote de la pistola. Usa un valor negativo para moverla a la izquierda.")]
+    public float sparkRightOffset = 0.0f;   // Corregido a 0.0f por defecto
+    [Tooltip("Mueve la chispa hacia adelante (positivo) o hacia atrás (negativo) a lo largo del eje de la pistola, partiendo del punto de impacto.")]
+    public float sparkForwardOffset = 0.0f;
+    // --- Fin Ajuste Visual ---
 
-    // Comentado: Nuevo campo para la máquina seleccionada
+    [Header("Debugging")]
+    public bool IsGizmo = false;
+    public float Rate; // Tasa de generación de puntos de soldadura
+
+    private List<GameObject> detectedObjects = new List<GameObject>();
     private MachineData selectedMachine;
-    private bool _weldingAllowed = false;
-    [System.Serializable]
+    private bool _weldingAllowed = false; // Flag de seguridad externa (proporcionada por WeldingSafetyGuard)
 
+    private bool Press;
+    private Vector3 normales = Vector3.zero;
+    private float FrameRate = 0;
+
+    // Bandera crítica para el SafetyGuard
+    private bool isTouchingMetal = false;
+
+    [System.Serializable]
     public class NewPartInfo
     {
         public string partName;
         public Sprite partImage;
     }
 
+    // Propiedad que el WeldingSafetyGuard utiliza para saber si hay metal cerca.
     public bool IsWeldingAllowed
     {
         get => _weldingAllowed;
@@ -60,29 +64,30 @@ public class PistolaSphereCastMerge : MonoBehaviour
             Debug.Log($"[PISTOLA] El estado de 'IsWeldingAllowed' ha sido establecido a: {_weldingAllowed}");
         }
     }
-    /////
-    // Variables de soldadura - Comentado: Se eliminan las variables de soldadura fijas.
-    // public float voltage = 22.0f;
-    // public float wireSpeed = 385f;
-    public string weldingResult = "65% regular"; // Comentado: Se mantiene el resultado, aunque podría depender de la máquina
-    private bool isTouchingMetal;
 
+    // Propiedad para obtener el estado del gatillo
     public bool IsWelding() => Press;
-    // Comentado: Los métodos ahora obtienen los valores de la máquina seleccionada
+
+    // Método que el SafetyGuard llama para verificar si hay contacto con el metal
+    public bool IsReadyToWeld()
+    {
+        // Devolvemos el estado de contacto actualizado constantemente en FixedUpdate
+        return isTouchingMetal;
+    }
+
+    // --- Métodos de la Máquina ---
     public float GetVoltage() => selectedMachine != null ? selectedMachine.defaultVoltage : 0f;
-    public float GetWireSpeed() => selectedMachine != null ? selectedMachine.defaultCurrent : 0f; // Comentado: Se usa defaultCurrent como proxy para "wireSpeed" en el contexto AC/DC.
-    public string GetWeldingResult() => weldingResult;
+    public float GetWireSpeed() => selectedMachine != null ? selectedMachine.defaultCurrent : 0f;
+    public string GetWeldingResult() => "65% regular";
 
+    // --- Lógica de Inicialización ---
 
-    /////
-
-    // Comentado: Agregado Awake y OnDestroy para suscribirse al MachineSelectionManager
     void Awake()
     {
+        // Suscribirse a la selección de máquina
         if (MachineSelectionManager.Instance != null)
         {
             MachineSelectionManager.Instance.OnMachineSelected += OnMachineSelected;
-            // Si ya hay una máquina seleccionada al inicio, la asignamos
             OnMachineSelected(MachineSelectionManager.Instance.SelectedMachine);
         }
         else
@@ -98,20 +103,13 @@ public class PistolaSphereCastMerge : MonoBehaviour
             MachineSelectionManager.Instance.OnMachineSelected -= OnMachineSelected;
         }
     }
-    public bool IsReadyToWeld()
-    {
-        return isTouchingMetal;
-    }
-    // Comentado: Método para manejar la selección de la máquina
+
     private void OnMachineSelected(MachineData machine)
     {
         selectedMachine = machine;
         if (selectedMachine != null)
         {
             Debug.Log($"Máquina seleccionada en PistolaSphereCastMerge: {selectedMachine.machineName} ({selectedMachine.machineType})");
-            // Aquí podrías actualizar la UI de la pistola si tuvieras los Text asignados
-            // if (voltageText != null) voltageText.text = selectedMachine.defaultVoltage.ToString("F1") + "V";
-            // if (speedText != null) speedText.text = selectedMachine.defaultCurrent.ToString("F0") + "A"; // Usando Current como proxy
         }
         else
         {
@@ -119,104 +117,110 @@ public class PistolaSphereCastMerge : MonoBehaviour
         }
     }
 
+    // --- Bucle de Actualización Física ---
 
     void FixedUpdate()
     {
+        // --- 1. DETECCIÓN DE CONTACTO ---
+        RaycastHit hitInfo;
+        Vector3 direction = pivot.forward;
 
+        if (Physics.SphereCast(pivot.position, sphereRadius, direction, out hitInfo, maxDistance, layerMask))
+        {
+            isTouchingMetal = true;
+        }
+        else
+        {
+            isTouchingMetal = false;
+        }
 
-
-        // Comentado: Verificar si se ha seleccionado una máquina antes de simular la soldadura
+        // --- 2. VERIFICACIÓN DE ESTADO ---
         if (selectedMachine == null)
         {
             if (Spark.isPlaying) Spark.Stop();
-            //Debug.Log("Esperando selección de máquina...");
             return;
         }
 
-        // Detectar si el gatillo del controlador está presionado
         Press = (triggerAction.action.ReadValue<float>() > 0.2f);
-        // Debug.Log("Press: " + Press); // Depuración del gatillo
-        if (IsWeldingAllowed)
+
+        // --- 3. LÓGICA DE SOLDADURA FINAL ---
+        if (IsWeldingAllowed && Press && isTouchingMetal)
         {
-            if (Press)
+            normales = Vector3.zero;
+            RaycastHit[] hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
+            detectedObjects.Clear();
+
+            // Debug.Log($"[WELD] SphereCastAll detectó {hits.Length} objetos."); 
+
+            foreach (RaycastHit hit in hits)
             {
-                normales = Vector3.zero;
-                RaycastHit[] hits;
-                Vector3 direction = pivot.forward;
-
-                hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
-                detectedObjects.Clear();
-
-                foreach (RaycastHit hit in hits)
+                if (!detectedObjects.Contains(hit.collider.gameObject))
                 {
-                    if (!detectedObjects.Contains(hit.collider.gameObject))
-                    {
-                        detectedObjects.Add(hit.collider.gameObject);
-                    }
-                    normales += hit.normal;
+                    detectedObjects.Add(hit.collider.gameObject);
                 }
+                normales += hit.normal;
+            }
 
-                if (detectedObjects.Count == 2)
+            // Lógica para MERGE
+            if (detectedObjects.Count >= 2)
+            {
+                MergeObjects(detectedObjects[0], detectedObjects[1]);
+            }
+
+            // Lógica de Partículas y Spawning
+            if (detectedObjects.Count > 0)
+            {
+                RaycastHit hit = hits[0];
+                // Orientar la rotación del Spark para que mire hacia la normal promedio
+                Quaternion rotation = Quaternion.LookRotation(normales.normalized, Vector3.up);
+
+                // --- APLICACIÓN DE OFFSET DE POSICIÓN ---
+                Vector3 sparkPosition = hit.point;
+
+                // 1. Offset Normal (Levantar ligeramente de la superficie)
+                sparkPosition += hit.normal * sparkNormalOffset;
+
+                // 2. Offset Lateral (Corregir el desplazamiento 'a la derecha' o 'izquierda')
+                // Usa pivot.right para la corrección lateral. Si la chispa está a la derecha, usa un valor negativo.
+                sparkPosition += pivot.right * sparkRightOffset;
+
+                // 3. Offset Longitudinal (Corregir el desplazamiento 'adelante' o 'atrás' a lo largo del eje de la pistola)
+                sparkPosition += pivot.forward * sparkForwardOffset;
+                // ----------------------------------------
+
+                Spark.transform.position = sparkPosition;
+                Spark.transform.rotation = rotation;
+
+                // Spawning del cordón de soldadura
+                if (FrameRate > Rate)
                 {
-                    MergeObjects(detectedObjects[0], detectedObjects[1]);
+                    // Nota: Mantenemos el cordón en hit.point para que se pegue a la superficie (sin offsets)
+                    _ObjectPoolManager?.GetObject(hit.point, Quaternion.identity, detectedObjects[0].transform);
+                    FrameRate = 0;
                 }
+                FrameRate += Time.deltaTime;
 
-                if (detectedObjects.Count > 0)
+                // Iniciar partículas
+                if (!Spark.isPlaying)
                 {
-                    RaycastHit hit = hits[0]; // Toma el primer impacto
-                    Quaternion rotation = Quaternion.LookRotation(normales, Vector3.up);
-
-                    // Comentado: Aquí podrías usar GetArcIntensity del behavior
-                    // float arcIntensity = selectedMachine.behavior.GetArcIntensity(hit.distance, GetWireSpeed(), GetVoltage());
-                    // Debug.Log($"Intensidad del Arco: {arcIntensity}");
-
-                    Spark.transform.position = hit.point;
-                    Spark.transform.rotation = rotation;
-
-                    if (FrameRate > Rate)
-                    {
-                        // Comentado: Asegurar que el objeto padre sea el primer objeto detectado o el objeto de soldadura
-                        _ObjectPoolManager?.GetObject(hit.point, Quaternion.identity, detectedObjects[0].transform);
-                        FrameRate = 0;
-                    }
-                    FrameRate += Time.deltaTime;
-
-                    // Debug.Log("Activando partículas en: " + Spark.transform.position);
-                    if (!Spark.isPlaying)
-                    {
-                        Spark.Play();
-                    }
-                }
-                else
-                {
-                    // Si el gatillo está presionado pero no hay colisión, detener partículas
-                    if (Spark.isPlaying)
-                    {
-                        Spark.Stop();
-                    }
+                    Spark.Play();
                 }
             }
             else
             {
-                if (Spark.isPlaying)
-                {
-                    Spark.Stop();
-                    // Debug.Log("Deteniendo partículas");
-                }
+                if (Spark.isPlaying) Spark.Stop();
             }
-
         }
-        else // Bloqueado por seguridad: Aseguramos que las chispas estén apagadas.
+        else // Bloqueado por seguridad
         {
             if (Spark != null && Spark.isPlaying)
             {
                 Spark.Stop();
             }
         }
-
-
-
     }
+
+    // --- Métodos de Utilidad ---
 
     void MergeObjects(GameObject obj1, GameObject obj2)
     {
@@ -224,54 +228,51 @@ public class PistolaSphereCastMerge : MonoBehaviour
         NewPart part2 = obj2.GetComponent<NewPart>();
         if (part1 == null || part2 == null) return;
 
-
         if (part1.weight > part2.weight)
         {
             part1.AbsorbPiece(part2);
         }
         else
         {
-            //Debug.Log("part2: "+part2.name + " AbsorbPiece-> part1: " + part1.name);
             part2.AbsorbPiece(part1);
         }
-
     }
+
+    // --- Gizmos para Visualización en el Editor ---
 
     private void OnDrawGizmos()
     {
         if (!IsGizmo) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(pivot.position, pivot.position + pivot.forward * maxDistance);
-        Gizmos.DrawWireSphere(pivot.position + pivot.forward * maxDistance, sphereRadius);
 
-        normales = Vector3.zero;
-
-        RaycastHit[] hits;
-        Vector3 direction = pivot.forward; // Dirección del SphereCast
-
-        hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
-
-        foreach (RaycastHit hit in hits)
+        if (pivot != null)
         {
-            if (hit.collider.CompareTag("Metal")) // Asegurar que sean cubos
+            Gizmos.DrawLine(pivot.position, pivot.position + pivot.forward * maxDistance);
+            Gizmos.DrawWireSphere(pivot.position + pivot.forward * maxDistance, sphereRadius);
+
+            Vector3 vizNormales = Vector3.zero;
+            RaycastHit[] hits;
+            Vector3 direction = pivot.forward;
+
+            hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
+
+            foreach (RaycastHit hit in hits)
             {
-                normales += hit.normal;
+                if (hit.collider.CompareTag("Metal"))
+                {
+                    vizNormales += hit.normal;
+                }
             }
-        }
 
-        if (hits.Length > 0) // Si detecta al menos un objeto
-        {
-            // Calcular la rotación para que Spark mire en la dirección de la normal
-            Quaternion rotation = Quaternion.LookRotation(normales);
+            if (hits.Length > 0)
+            {
+                // Dibuja la normal promedio
+                Gizmos.DrawLine(hits[0].point, hits[0].point + vizNormales.normalized * 0.5f);
 
-            // Ajustar la posición y rotación de las partículas
-            Spark.transform.position = hits[0].point; // Coloca las partículas en el punto de impacto
-            Spark.transform.rotation = rotation;      // Orienta las partículas según la normal
-
-        }
-        if (hits.Length > 0)
-        {
-            Gizmos.DrawLine(hits[0].point, hits[0].point + normales * 12);
+                // Dibuja el punto donde se colocaría la chispa sin offsets
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(hits[0].point, 0.05f);
+            }
         }
     }
 }

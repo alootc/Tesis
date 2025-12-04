@@ -273,7 +273,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineNameText: {fileID: 8963177225648866429}
   modelContainer: {fileID: 3293910281566872837}
-  expandedIndicator: {fileID: 7713187889409234801}
   expandedScale: 1.12
   animationDuration: 0.35
 --- !u!1 &8706658047320679592

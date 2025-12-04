@@ -1470,21 +1470,6 @@ MonoBehaviour:
   IsGizmo: 1
   Rate: 0.25
   _ObjectPoolManager: {fileID: 500371385}
-  voltageText: {fileID: 171407457}
-  speedText: {fileID: 1087559657}
-  timeText: {fileID: 1774465812}
-  resultText: {fileID: 780312474}
-  panelImage: {fileID: 642731617}
-  defaultImage: {fileID: 21300000, guid: 629e300627dae1946a5aa249bba1ef5b, type: 3}
-  partInfos:
-  - partName: Texto Atope
-    partImage: {fileID: 21300000, guid: 629e300627dae1946a5aa249bba1ef5b, type: 3}
-  - partName: Texto Esquina
-    partImage: {fileID: 21300000, guid: 41a710f3285e16748a358273e0a3a359, type: 3}
-  - partName: Texto T
-    partImage: {fileID: 21300000, guid: 49b760dcef38592409ed08afbe171839, type: 3}
-  voltage: 22
-  wireSpeed: 385
   weldingResult: 65% regular
 --- !u!114 &181849353
 MonoBehaviour:
@@ -1498,6 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86be97dbba3edd94e936e7a4ca464cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decalPoolManager: {fileID: 0}
   decalPrefab: {fileID: 5109751603442714123, guid: fa8781ad2b475d54ebab5ba3a62bd01b,
     type: 3}
   spawnInterval: 0.1
@@ -1517,6 +1503,8 @@ MonoBehaviour:
   fireEffect: {fileID: 878549023}
   spawnPoint: {fileID: 698909929}
   acidDecalSpawner: {fileID: 0}
+  poolManagerSparks: {fileID: 0}
+  poolManagerFire: {fileID: 0}
 --- !u!114 &181849355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6844,7 +6832,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8887,8 +8875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &440329433
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9027,8 +9014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &474419145
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9312,8 +9298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &478822976
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10490,8 +10475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &616943604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16364,7 +16348,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 0}
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16552,8 +16536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &859900660
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22618,8 +22601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &1057474233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23740,8 +23722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &1131535786
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24173,8 +24154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  voltage: 22
-  wireSpeed: 385
+  isBeingWelded: 0
 --- !u!65 &1173726139
 BoxCollider:
   m_ObjectHideFlags: 0

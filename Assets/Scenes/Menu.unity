@@ -1382,6 +1382,8 @@ MonoBehaviour:
   fireEffect: {fileID: 435204130}
   spawnPoint: {fileID: 1797601519}
   acidDecalSpawner: {fileID: 0}
+  poolManagerSparks: {fileID: 0}
+  poolManagerFire: {fileID: 0}
 --- !u!1 &504599357
 GameObject:
   m_ObjectHideFlags: 0
@@ -10491,6 +10493,8 @@ MonoBehaviour:
   fireEffect: {fileID: 435204130}
   spawnPoint: {fileID: 642831353}
   acidDecalSpawner: {fileID: 0}
+  poolManagerSparks: {fileID: 0}
+  poolManagerFire: {fileID: 0}
 --- !u!114 &2110054858
 MonoBehaviour:
   m_ObjectHideFlags: 0

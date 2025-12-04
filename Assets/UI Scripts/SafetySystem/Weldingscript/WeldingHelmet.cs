@@ -41,7 +41,6 @@ public class WeldingHelmet : MonoBehaviour
     private void OnDarkeningToggle(InputAction.CallbackContext context)
     {
         // Solo alternar si la careta está actualmente activa o en uso (opcionalmente puedes verificar si está equipada)
-        Debug.Log("zzzz con fe ");
         // Por simplicidad, asumimos que siempre funciona si la acción es disparada.
         ActivateDarkening(!isDarkened);
     }
