@@ -1,30 +1,45 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FeedbackReportManager : MonoBehaviour
 {
     public static FeedbackReportManager Instance { get; private set; }
 
-    [Header("ConfiguraciÛn de UI")]
+    [Header("Configuraci√≥n de UI")]
     [Tooltip("Panel UI que contiene el reporte final. Debe estar desactivado por defecto.")]
     public GameObject reportPanel;
     public TextMeshProUGUI percentageText;
     public TextMeshProUGUI summaryText;
     public TextMeshProUGUI detailsText;
-    public GameObject continueButton; // El nuevo botÛn para continuar/resetear
+    public GameObject continueButton; // El nuevo bot√≥n para continuar/resetear
 
-    [Header("Pesos de PuntuaciÛn (Suma 100%)")]
-    [Tooltip("Peso de la secciÛn de Equipamiento de ProtecciÛn Personal (EPI).")]
+    [Header("Pesos de Puntuaci√≥n (Suma 100%)")]
+    [Tooltip("Peso de la secci√≥n de Equipamiento de Protecci√≥n Personal (EPI).")]
     [Range(0f, 100f)] public float epiWeight = 40f;
-    [Tooltip("Peso de la secciÛn de Procedimiento Secuencial (Fase 2).")]
+    [Tooltip("Peso de la secci√≥n de Procedimiento Secuencial (Fase 2).")]
     [Range(0f, 100f)] public float sequenceWeight = 40f;
-    [Tooltip("Peso de la secciÛn de Errores CrÌticos durante la Soldadura (ej. casco claro, contacto).")]
+    [Tooltip("Peso de la secci√≥n de Errores Cr√≠ticos durante la Soldadura (ej. casco claro, contacto).")]
     [Range(0f, 100f)] public float criticalWeldErrorWeight = 20f;
 
-    // Lista interna para registrar las fallas que afectar·n el porcentaje
-    private List<string> recordedFailures = new List<string>();
+    // --- NUEVAS ESTRUCTURAS DE DATOS ---
+    // Diccionario para contar la frecuencia de cada mensaje de error cr√≠tico
+    private Dictionary<string, int> criticalErrorCounter = new Dictionary<string, int>();
+    // Lista para registrar fallas de EPI/Secuencia (errores no repetitivos)
+    private List<string> nonCriticalFailures = new List<string>();
+
+    // Define el n√∫mero de fallos cr√≠ticos (cooldown ajustado) para obtener 0% en la secci√≥n de errores cr√≠ticos.
+    private const int MAX_CRITICAL_ERRORS_FOR_PENALTY = 5;
+
+    // --- NUEVO ESTADO PARA EL C√ÅLCULO REAL DE PUNTUACI√ìN ---
+    // Bandera para rastrear si el EPI obligatorio fue completado. Inicia en 'false'.
+    private bool epiCompleted = false;
+    // Bandera para rastrear si la secuencia fue completada. Inicia en 'false'.
+    private bool sequenceCompleted = false;
+    // --- FIN NUEVO ESTADO ---
+
 
     private void Awake()
     {
@@ -35,31 +50,111 @@ public class FeedbackReportManager : MonoBehaviour
         }
         Instance = this;
         reportPanel.SetActive(false); // Asegurar que inicie oculto
+        ResetCounters(); // Asegurarse de que los contadores est√©n limpios al inicio
     }
 
-    // MÈtodo a llamar desde un botÛn "Finalizar" de la UI principal
+    // M√©todo para limpiar todos los contadores antes de una nueva simulaci√≥n
+    private void ResetCounters()
+    {
+        criticalErrorCounter.Clear();
+        nonCriticalFailures.Clear();
+        // Resetear los estados de finalizaci√≥n al inicio de una nueva simulaci√≥n
+        epiCompleted = false;
+        sequenceCompleted = false;
+    }
+
+    // --- NUEVOS M√âTODOS PARA RECIBIR EL ESTADO DE COMPLETADO ---
+    /// <summary>
+    /// M√©todo a llamar por el SafetyTutorialManager para indicar si la EPI fue recolectada al 100%.
+    /// </summary>
+    public void SetEPICompletionStatus(bool completed)
+    {
+        epiCompleted = completed;
+        Debug.Log($"[REPORTE] Estado de finalizaci√≥n de EPI establecido a: {completed}");
+    }
+
+    /// <summary>
+    /// M√©todo a llamar por el SafetyTutorialManager para indicar si la Secuencia fue completada al 100%.
+    /// </summary>
+    public void SetSequenceCompletionStatus(bool completed)
+    {
+        sequenceCompleted = completed;
+        Debug.Log($"[REPORTE] Estado de finalizaci√≥n de Secuencia establecido a: {completed}");
+    }
+    // --- FIN NUEVOS M√âTODOS ---
+
+
+    // M√©todo p√∫blico para que otras clases registren una falla general (EPI o Secuencia, no repetitiva)
+    public void RecordFailure(string failureMessage)
+    {
+        // Solo registra el mensaje de falla si no est√° ya presente
+        if (!nonCriticalFailures.Contains(failureMessage))
+        {
+            nonCriticalFailures.Add(failureMessage);
+        }
+        Debug.Log($"[REPORTE] Falla de Seguridad/Procedimiento registrada: {failureMessage}");
+    }
+
+    /// <summary>
+    /// Registra y cuenta un error cr√≠tico de soldadura (ej. intentar soldar sin casco, sin contacto).
+    /// </summary>
+    /// <param name="errorMessage">El tipo de error, usado como clave para el conteo.</param>
+    public void RecordCriticalWeldError(string errorMessage)
+    {
+        // Incrementa el contador para este tipo espec√≠fico de error
+        if (criticalErrorCounter.ContainsKey(errorMessage))
+        {
+            criticalErrorCounter[errorMessage]++;
+        }
+        else
+        {
+            criticalErrorCounter.Add(errorMessage, 1);
+        }
+        // Debug.Log($"[REPORTE] Error Cr√≠tico registrado: {errorMessage}. Conteo total: {GetTotalCriticalErrors()}");
+    }
+
+    /// <summary>
+    /// Devuelve el n√∫mero total de errores cr√≠ticos (suma de todos los tipos).
+    /// </summary>
+    private int GetTotalCriticalErrors()
+    {
+        return criticalErrorCounter.Values.Sum();
+    }
+
+
+    // M√©todo a llamar desde un bot√≥n "Finalizar" de la UI principal
     public void GenerateAndShowReport()
     {
         Debug.Log("[REPORTE] Generando informe final...");
 
+        // --- LOGGING ADICIONAL PARA DIAGN√ìSTICO ---
+        // Verificar el estado de los contadores justo antes de generar el reporte
+        Debug.Log("=============================================");
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Verificando datos antes de reportar:");
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Estado EPI Completado: {epiCompleted}"); // Diagn√≥stico de nuevo estado
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Estado Secuencia Completada: {sequenceCompleted}"); // Diagn√≥stico de nuevo estado
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Total de Errores Cr√≠ticos Contados (Suma): {GetTotalCriticalErrors()}");
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Tipos de Errores Cr√≠ticos √önicos: {criticalErrorCounter.Count}");
+        Debug.Log($"[REPORTE DIAGN√ìSTICO] Advertencias/Fallas No Repetitivas: {nonCriticalFailures.Count}");
+        Debug.Log("=============================================");
+        // --- FIN LOGGING ADICIONAL ---
+
         // 1. Obtener y analizar los datos de seguridad
         float epiScore = CalculateEPIScore();
         float sequenceScore = CalculateSequenceScore();
+        float criticalErrorScore = CalculateCriticalWeldErrorScore();
 
-        // 2. Calcular la puntuaciÛn total
-        // NOTA: El sistema de errores crÌticos de soldadura se registrarÌa
-        // continuamente durante la simulaciÛn (a˙n no implementado). 
-        // Por ahora, asumimos 100% en errores crÌticos si no se ha registrado nada.
-        float criticalErrorScore = 100f; // Asumimos que no hubo fallos crÌticos de soldadura
-
+        // 2. Calcular la puntuaci√≥n total
         float finalScore =
             (epiScore * (epiWeight / 100f)) +
             (sequenceScore * (sequenceWeight / 100f)) +
             (criticalErrorScore * (criticalWeldErrorWeight / 100f));
 
+        finalScore = Mathf.Max(0f, finalScore); // Asegurar que la puntuaci√≥n no baje de 0
+
         // 3. Generar el texto del reporte
         string summary = GetSummaryText(finalScore);
-        string details = GetDetailedReport(epiScore, sequenceScore);
+        string details = GetDetailedReport(epiScore, sequenceScore, criticalErrorScore);
 
         // 4. Actualizar la UI
         percentageText.text = $"{Mathf.RoundToInt(finalScore)}%";
@@ -68,110 +163,136 @@ public class FeedbackReportManager : MonoBehaviour
 
         // 5. Mostrar el panel
         reportPanel.SetActive(true);
-        Time.timeScale = 0f; // Pausar el tiempo de la simulaciÛn mientras se ve el reporte
+        Time.timeScale = 0f; // Pausar el tiempo de la simulaci√≥n mientras se ve el reporte
 
-        // Asignar listener al botÛn (Ejemplo: Volver al men˙ o resetear)
-        continueButton.GetComponent<UnityEngine.UI.Button>().onClick.RemoveAllListeners();
-        continueButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(ResetSimulation);
+        // Asignar listener al bot√≥n 
+        var buttonComponent = continueButton.GetComponent<UnityEngine.UI.Button>();
+        if (buttonComponent != null)
+        {
+            buttonComponent.onClick.RemoveAllListeners();
+            buttonComponent.onClick.AddListener(ResetSimulation);
+        }
+        else
+        {
+            Debug.LogError("El GameObject 'continueButton' no tiene un componente Button.");
+        }
     }
 
     /// <summary>
-    /// Calcula la puntuaciÛn del EPI (Fase 1 de orden libre).
+    /// Calcula la puntuaci√≥n de errores cr√≠ticos de soldadura, bas√°ndose en el total de errores contados.
+    /// </summary>
+    private float CalculateCriticalWeldErrorScore()
+    {
+        int totalErrors = GetTotalCriticalErrors();
+        if (totalErrors == 0) return 100f;
+
+        // Penalizaci√≥n lineal: cada error resta un porcentaje hasta alcanzar 0% en el l√≠mite.
+        float score = 100f - ((float)totalErrors / MAX_CRITICAL_ERRORS_FOR_PENALTY) * 100f;
+
+        // Aseguramos que la puntuaci√≥n no sea negativa.
+        return Mathf.Max(0f, score);
+    }
+
+    /// <summary>
+    /// Calcula la puntuaci√≥n del EPI (Fase 1 de orden libre). (L√≥gica REAL usando el estado 'epiCompleted')
     /// </summary>
     private float CalculateEPIScore()
     {
-        if (SafetyTutorialManager.Instance == null || SafetyTutorialManager.Instance.checklistData == null) return 0f;
-
-        var freeItems = SafetyTutorialManager.Instance.checklistData.freeOrderItems;
-        if (freeItems.Count == 0) return 100f;
-
-        // Contar cu·ntos EPI crÌticos fueron recolectados correctamente
-        int collectedCount = freeItems.Count(item => SafetyTutorialManager.Instance.IsItemCollected(item));
-
-        float score = (float)collectedCount / freeItems.Count * 100f;
-
-        if (score < 100f)
-        {
-            var missingItems = freeItems.Where(item => !SafetyTutorialManager.Instance.IsItemCollected(item));
-            foreach (var item in missingItems)
-            {
-                recordedFailures.Add($"EPI Faltante: {item}");
-            }
-        }
-        return score;
+        // Si la bandera 'epiCompleted' no fue seteada a true, la puntuaci√≥n es 0.
+        // Esto asume que el EPI es un requisito de todo o nada (100% o 0%).
+        return epiCompleted ? 100f : 0f;
     }
 
     /// <summary>
-    /// Calcula la puntuaciÛn de la Secuencia (Fase 2 de orden secuencial).
-    /// Asume que si la fase 2 se completÛ, la secuencia fue perfecta. 
-    /// En una versiÛn m·s compleja, se registrarÌan errores de secuencia en el Manager.
+    /// Calcula la puntuaci√≥n de la Secuencia (Fase 2 de orden secuencial). (L√≥gica REAL usando el estado 'sequenceCompleted')
     /// </summary>
     private float CalculateSequenceScore()
     {
-        // En una implementaciÛn real, SafetyTutorialManager necesitarÌa 
-        // registrar errores de orden y si se completÛ.
-        if (SafetyTutorialManager.Instance == null) return 0f;
-
-        // Si la fase 2 terminÛ (el Manager est· en OFF o fue a la siguiente fase sin errores)
-        // Por simplicidad, asumimos que si no est· en Sequential, la completÛ con Èxito.
-        if (SafetyTutorialManager.Instance.currentPhase == SafetyTutorialManager.TutorialPhase.Sequential)
-        {
-            recordedFailures.Add("Secuencia: FASE 2 NO completada.");
-            return 0f; // Falla total si la secuencia no se terminÛ.
-        }
-
-        // AquÌ podrÌas agregar lÛgica m·s granular si el SafetyTutorialManager registrara
-        // "pasos perdidos" o "pasos en orden incorrecto".
-        return 100f; // Si no est· en secuencial, asumimos Èxito (o se manejÛ en EPI).
+        // Si la bandera 'sequenceCompleted' no fue seteada a true, la puntuaci√≥n es 0.
+        // Esto asume que la Secuencia es un requisito de todo o nada (100% o 0%).
+        return sequenceCompleted ? 100f : 0f;
     }
 
     private string GetSummaryText(float finalScore)
     {
-        if (finalScore >= 90) return "°…xito Excepcional! Dominaste la seguridad y el procedimiento.";
-        if (finalScore >= 70) return "Buen DesempeÒo. Cumpliste con lo b·sico, pero revisa los detalles.";
+        if (finalScore >= 90) return "¬°√âxito Excepcional! Dominaste la seguridad y el procedimiento.";
+        if (finalScore >= 70) return "Buen Desempe√±o. Cumpliste con lo b√°sico, pero revisa los detalles.";
         if (finalScore >= 50) return "Necesitas Repasar. Hay fallos graves en seguridad o procedimiento.";
-        return "Fallo CrÌtico. La simulaciÛn terminÛ con fallos de seguridad mayores.";
+        return "Fallo Cr√≠tico. La simulaci√≥n termin√≥ con fallos de seguridad mayores.";
     }
 
-    private string GetDetailedReport(float epiScore, float sequenceScore)
+    private string GetDetailedReport(float epiScore, float sequenceScore, float criticalScore)
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        // Las advertencias/fallas no cr√≠ticas solo se muestran si la fase fall√≥, aunque la l√≥gica del puntaje ya lo maneja.
+        int totalWarnings = nonCriticalFailures.Count + GetTotalCriticalErrors();
 
         sb.AppendLine("--- RESUMEN DETALLADO ---");
-        sb.AppendLine($"PuntuaciÛn de EPI (ColecciÛn): {epiScore:F0}%");
-        sb.AppendLine($"PuntuaciÛn de Secuencia: {sequenceScore:F0}%");
+        sb.AppendLine($"Puntuaci√≥n de EPI (Colecci√≥n): {epiScore:F0}%");
+        sb.AppendLine($"Puntuaci√≥n de Secuencia: {sequenceScore:F0}%");
+        sb.AppendLine($"Puntuaci√≥n de Errores Cr√≠ticos: {criticalScore:F0}%");
         sb.AppendLine("--------------------------");
 
-        if (recordedFailures.Any())
+        sb.AppendLine($"\n**TOTAL DE ERRORES/ADVERTENCIAS REGISTRADAS: {totalWarnings}**");
+
+        // *** DIAGN√ìSTICO PARA ERRORES CR√çTICOS ***
+        if (GetTotalCriticalErrors() > 0 && criticalScore == 100)
         {
-            sb.AppendLine("\n**ERRORES Y ADVERTENCIAS:**");
-            foreach (var failure in recordedFailures)
+            sb.AppendLine("\nüö® **ADVERTENCIA:** Se registraron errores cr√≠ticos, pero la puntuaci√≥n de 100% indica que el sistema de penalizaci√≥n podr√≠a estar inactivo o los pesos son bajos.");
+        }
+        // *** FIN DIAGN√ìSTICO ***
+
+
+        if (totalWarnings > 0)
+        {
+            sb.AppendLine("\n**DETALLE POR TIPO DE FALLA:**");
+
+            // 1. Errores Cr√≠ticos (Repetitivos)
+            if (criticalErrorCounter.Any())
             {
-                sb.AppendLine($"- {failure}");
+                sb.AppendLine("\n**A) ERRORES CR√çTICOS DE SOLDADURA:**");
+                foreach (var pair in criticalErrorCounter)
+                {
+                    // Formato: - Error Cr√≠tico: Soldadura intentada sin contacto (x4)
+                    sb.AppendLine($"- {pair.Key.Replace("Error Cr√≠tico: ", "")} ({pair.Value} veces)");
+                }
+            }
+
+            // 2. Fallas No Cr√≠ticas (No Repetitivas)
+            if (nonCriticalFailures.Any())
+            {
+                // Se asume que estos son los mensajes que explican por qu√© EPI o Secuencia fall√≥.
+                sb.AppendLine("\n**B) ADVERTENCIAS DE SEGURIDAD/PROCEDIMIENTO (Detalle de Fallo):**");
+                foreach (var failure in nonCriticalFailures)
+                {
+                    sb.AppendLine($"- {failure}");
+                }
             }
         }
         else
         {
-            sb.AppendLine("\n**°Excelente! No se registraron fallos de seguridad.**");
+            sb.AppendLine("\n**¬°Excelente! No se registraron fallos de seguridad o procedimiento.**");
         }
 
-        // Limpiar para la prÛxima simulaciÛn
-        recordedFailures.Clear();
+        // Mensaje de diagn√≥stico si el EPI fall√≥ pero no se registraron fallas expl√≠citas
+        if (epiScore == 0)
+        {
+            sb.AppendLine("\n‚ö†Ô∏è **NOTA DE FALLA DE EPI:** La fase de EPI no fue completada (0%). Aseg√∫rate de haber recogido **TODOS** los √≠tems de la Fase 1 antes de finalizar la simulaci√≥n.");
+        }
+
 
         return sb.ToString();
     }
 
-    // MÈtodo para reanudar o resetear la simulaciÛn
+    // M√©todo para reanudar o resetear la simulaci√≥n
     public void ResetSimulation()
     {
-        // Reanudar el tiempo
         Time.timeScale = 1f;
         reportPanel.SetActive(false);
+        ResetCounters(); // Resetear contadores y fallos registrados
 
-        // TODO: Implementar aquÌ la lÛgica para:
-        // 1. Cargar la escena de inicio (si aplica)
-        // 2. O, Resetear el estado de todos los objetos de la escena actual
-        Debug.Log("[REPORTE] SimulaciÛn reseteada. Implementar recarga de escena aquÌ.");
-        // Ejemplo de recarga de escena: SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Recargar la escena actual
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("[REPORTE] Simulaci√≥n reseteada y escena recargada.");
     }
 }

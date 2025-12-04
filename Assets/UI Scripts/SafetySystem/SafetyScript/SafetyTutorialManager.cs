@@ -186,12 +186,24 @@ public class SafetyTutorialManager : MonoBehaviour
             // Uses LINQ to count only the collected items that belong to the freeOrderItems list.
             if (currentPhase == TutorialPhase.FreeOrder && collectedItems.Count(item => checklistData.freeOrderItems.Contains(item)) >= checklistData.freeOrderItems.Count)
             {
+                // *** AVISO CRÍTICO AL REPORTE: EPI (Fase 1) COMPLETADO ***
+                if (FeedbackReportManager.Instance != null)
+                {
+                    FeedbackReportManager.Instance.SetEPICompletionStatus(true);
+                }
+
                 Debug.Log("[SAFETY TUTORIAL] Phase 1 (Collection) Completed. Starting Phase 2 (Sequential).");
                 StartPhase(TutorialPhase.Sequential);
             }
             // PHASE 2: Completes when the sequence index reaches the end of sequentialItems.
             else if (currentPhase == TutorialPhase.Sequential && nextSequentialIndex >= checklistData.sequentialItems.Count)
             {
+                // *** AVISO CRÍTICO AL REPORTE: SECUENCIA (Fase 2) COMPLETADA ***
+                if (FeedbackReportManager.Instance != null)
+                {
+                    FeedbackReportManager.Instance.SetSequenceCompletionStatus(true);
+                }
+
                 Debug.Log("[SAFETY TUTORIAL] Phase 2 (Sequential) Completed. Safety Tutorial FINISHED.");
                 currentPhase = TutorialPhase.Off; // Tutorial completed
             }

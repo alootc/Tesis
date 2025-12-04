@@ -31,6 +31,13 @@ public class PistolaSphereCastMerge : MonoBehaviour
     public bool IsGizmo = false;
     public float Rate; // Tasa de generación de puntos de soldadura
 
+    // --- VARIABLES DE CONTROL DE ERRORES CRÍTICOS ---
+    private const float ERROR_COOLDOWN = 1.5f; // Tiempo de espera para registrar el mismo error (en segundos)
+    private float _errorTimer = 0f;
+    private string _lastErrorMessage = "";
+    // --- FIN VARIABLES DE CONTROL DE ERRORES CRÍTICOS ---
+
+
     private List<GameObject> detectedObjects = new List<GameObject>();
     private MachineData selectedMachine;
     private bool _weldingAllowed = false; // Flag de seguridad externa (proporcionada por WeldingSafetyGuard)
@@ -121,6 +128,12 @@ public class PistolaSphereCastMerge : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Actualizar el temporizador de error
+        if (_errorTimer > 0)
+        {
+            _errorTimer -= Time.deltaTime;
+        }
+
         // --- 1. DETECCIÓN DE CONTACTO ---
         RaycastHit hitInfo;
         Vector3 direction = pivot.forward;
@@ -146,6 +159,10 @@ public class PistolaSphereCastMerge : MonoBehaviour
         // --- 3. LÓGICA DE SOLDADURA FINAL ---
         if (IsWeldingAllowed && Press && isTouchingMetal)
         {
+            // Soldadura exitosa
+            // Resetear el último error registrado para permitir que un nuevo error se registre inmediatamente después.
+            _lastErrorMessage = "";
+
             normales = Vector3.zero;
             RaycastHit[] hits = Physics.SphereCastAll(pivot.position, sphereRadius, direction, maxDistance, layerMask);
             detectedObjects.Clear();
@@ -217,6 +234,48 @@ public class PistolaSphereCastMerge : MonoBehaviour
             {
                 Spark.Stop();
             }
+
+            // --- LÓGICA DE REGISTRO DE ERRORES CRÍTICOS (Advertencias) ---
+            if (Press) // Solo si el gatillo está activado, registramos el error
+            {
+                string currentErrorMessage = string.Empty;
+
+                if (!IsWeldingAllowed)
+                {
+                    // Error de EPI (SafetyGuard)
+                    currentErrorMessage = "Error Crítico: Soldadura intentada sin equipo de seguridad (EPI) completo o en zona no autorizada.";
+                }
+                else if (IsWeldingAllowed && !isTouchingMetal)
+                {
+                    // Error de Contacto (Pistola)
+                    currentErrorMessage = "Error Crítico: Soldadura intentada sin contacto o muy lejos de la pieza de metal.";
+                }
+
+                // Solo si encontramos un nuevo error Y el temporizador ha expirado, registramos.
+                if (!string.IsNullOrEmpty(currentErrorMessage))
+                {
+                    // Comprobar si es un error nuevo o si el cooldown ha terminado
+                    if (currentErrorMessage != _lastErrorMessage || _errorTimer <= 0f)
+                    {
+                        if (FeedbackReportManager.Instance != null)
+                        {
+                            // Registra el error en el manager para la penalización en la puntuación
+                            FeedbackReportManager.Instance.RecordCriticalWeldError(currentErrorMessage);
+                        }
+
+                        // Restablecer temporizador y guardar el mensaje del último error
+                        _errorTimer = ERROR_COOLDOWN;
+                        _lastErrorMessage = currentErrorMessage;
+                    }
+                }
+                // Si Press es True, pero no hay error, significa que está en un estado intermedio seguro (raro)
+                // En este caso, no registramos nada.
+            }
+            else // Si el gatillo NO está presionado, no hay necesidad de registrar errores, y reseteamos el error temporal.
+            {
+                _lastErrorMessage = "";
+            }
+            // --- FIN LÓGICA DE REGISTRO DE ERRORES CRÍTICOS ---
         }
     }
 
