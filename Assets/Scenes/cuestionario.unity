@@ -319,10 +319,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   url: https://script.google.com/macros/s/AKfycbzTCmrSI8a3-3hZutUYflhM8P5ne3svzxB_qX-4n3HBu5LU5jVoZROekrpgTCV4KHPi2g/exec
-  nombrePrueba: Jugador1
-  r1Prueba: A
-  r2Prueba: B
-  r3Prueba: C
+  nombrePrueba: MariaWazaaaaaa
+  r1Prueba: C
+  r2Prueba: A
+  r3Prueba: T
 --- !u!4 &1696851680
 Transform:
   m_ObjectHideFlags: 0
