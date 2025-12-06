@@ -163,7 +163,7 @@ public class FeedbackReportManager : MonoBehaviour
 
         // 5. Mostrar el panel
         reportPanel.SetActive(true);
-        Time.timeScale = 0f; // Pausar el tiempo de la simulación mientras se ve el reporte
+        Time.timeScale = 1f; // Pausar el tiempo de la simulación mientras se ve el reporte
 
         // Asignar listener al botón 
         var buttonComponent = continueButton.GetComponent<UnityEngine.UI.Button>();
