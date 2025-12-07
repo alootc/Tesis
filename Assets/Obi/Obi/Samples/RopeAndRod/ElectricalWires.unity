@@ -159,10 +159,12 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,6 +182,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -294,19 +297,16 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
-        type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459882}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
-        type: 3}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 506459883}
   m_SourcePrefab: {fileID: 100100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
 --- !u!1 &506459881 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 64df75de10b494f109b074d28a8eade0, type: 3}
   m_PrefabInstance: {fileID: 421764872}
   m_PrefabAsset: {fileID: 0}
 --- !u!64 &506459882
@@ -582,8 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 574933229}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -603,8 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 574933229}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -624,8 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 574933229}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -645,8 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 574933229}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1156,10 +1152,12 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1177,6 +1175,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -1447,8 +1446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1346965642}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1468,8 +1466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1346965642}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1489,8 +1486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1346965642}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1525,8 +1521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1346965642}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1680,8 +1675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1544324416}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1701,8 +1695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1544324416}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1722,8 +1715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1544324416}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1743,8 +1735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1544324416}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1955,8 +1946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1634024680}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1976,8 +1966,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1634024680}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -1997,8 +1986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1634024680}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2018,8 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 1634024680}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2359,8 +2346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2025663233}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2380,8 +2366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2025663233}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2401,8 +2386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2025663233}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2422,8 +2406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2025663233}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2634,8 +2617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2060423110}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 5567824606580605130, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2655,8 +2637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2060423110}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1812756508894959938, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2676,8 +2657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2060423110}
   m_Target: {fileID: 153317914}
-  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: -2436371210810594525, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
@@ -2697,8 +2677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actor: {fileID: 2060423110}
   m_Target: {fileID: 1189404435}
-  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569,
-    type: 2}
+  m_ParticleGroup: {fileID: 1986289758551400005, guid: 61d053dd5abd943919947f833abd0569, type: 2}
   m_AttachmentType: 0
   m_ConstrainOrientation: 0
   m_Projection: 0
